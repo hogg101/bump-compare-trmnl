@@ -32,8 +32,10 @@ If custom fields still don't work:
 
 ## Access Pattern in Liquid
 
-The markup accesses custom fields like this:
+The markup accesses custom fields via `trmnl.plugin_settings.custom_fields_values`:
+
 ```liquid
+{% assign custom_fields = trmnl.plugin_settings.custom_fields_values %}
 {% assign due_date = custom_fields.due_date %}
 {% assign locale = custom_fields.locale | default: "en-GB" %}
 ```

@@ -50,12 +50,12 @@ Embed a small JSON table inside the markup (avoids hosting). Example schema:
 ]
 ```
 
-* Populate weeks **4–40** fully. Interpolate values between anchor weeks. Clamp <4 to 4 with a short “tracking from week 4” label.
+* Populate weeks **0–40** fully with 20 anchor weeks. Interpolate values between anchor weeks. Weeks 0-3 use the earliest anchor icon.
 * Localise `name` per `locale`; convert units at render time.
 
 ## Rendering & Layout (v2)
 
-* Provide **`markup`**, **`markup_half_horizontal`**, **`markup_half_vertical`**, **`markup_quadrant`** strings as required by TRMNL; reuse a compact layout for smaller canvases. ([docs.usetrmnl.com][6])
+* Provide **`full.liquid`**, **`half_horizontal.liquid`**, **`half_vertical.liquid`**, **`quadrant.liquid`** files as required by TRMNL; reuse a compact layout for smaller canvases. ([docs.usetrmnl.com][6])
 * Use v2 utilities/components and follow the Troubleshooting Guide to satisfy stricter markup rules. ([usetrmnl.com][1])
 * Typography: large “Week N”, centred 1-bit icon, label, and small caption `~length · ~weight`.
 
@@ -82,7 +82,9 @@ Embed a small JSON table inside the markup (avoids hosting). Example schema:
 ## Assets (icons)
 
 * **1-bit PNG** at ~256×256, bold silhouettes suited to e-ink.
-* Prepare via a batch process (e.g., ImageMagick) to monchrome/1-bit with optional dithering. ([help.usetrmnl.com][2])
+* **20 icons total** covering weeks 0-40 (see `ICONS.md` for complete list).
+* Icons are **embedded as base64** in the markup (no external hosting required).
+* Prepare via a batch process (e.g., ImageMagick) to monochrome/1-bit with optional dithering. ([help.usetrmnl.com][2])
 
 ## Optional backend (later, only if needed)
 
@@ -103,10 +105,10 @@ If we decide to host data/assets centrally (e.g., dynamic copy, analytics), serv
 
 1. **Private Plugin** (v2-compliant) ready to install:
 
-   * Completed **markup** strings (all sizes).
-   * Embedded **weeks.json** (weeks 4–40).
-   * **Custom fields** schema (as above).
-   * **1-bit icon pack** (10–15 anchor items + interpolations).
+   * Completed **markup files** (full.liquid, half_horizontal.liquid, half_vertical.liquid, quadrant.liquid).
+   * Embedded **weeks data** (weeks 0–40 with 20 anchor points).
+   * **Custom fields** schema (`custom_fields.yml`).
+   * **1-bit icon pack** (20 icons, base64 embedded).
 2. **README** for authors:
 
    * How to set due date/month, locale, and units.
@@ -118,13 +120,13 @@ If we decide to host data/assets centrally (e.g., dynamic copy, analytics), serv
 * Works on TRMNL hardware and web preview using **Framework v2**.
 * No external network calls in the default build.
 * Correct week calculation across DST/offsets using TRMNL-provided timezone variables.
-* Full coverage of weeks 4–40 with reasonable, recognisable comparators.
+* Full coverage of weeks 0–40 with 20 recognisable comparators.
 * Localisation switch changes names and units appropriately.
 * All images display crisply in 1-bit at all TRMNL render sizes.
 
 ## Milestones
 
-* **M1 — Prototype (markup-only)**: 1–2 anchor icons, week calc, locale/units toggle, v2 layout.
+* **M1 — Prototype (markup-only)**: ✅ Complete - week calc, locale/units toggle, v2 layout, all viewport sizes.
 * **M2 — Full Data & Icons**: populate weeks 4–40, interpolate sizes, complete icon set.
 * **M3 — Polish**: typography tweaks for half/quadrant, error states (missing date), exportable ZIP.
 * **M4 — (Optional) Worker**: add Worker endpoint, move data/icons to CDN, flip plugin to remote markup.
