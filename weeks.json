@@ -1,0 +1,13 @@
+[
+  { "week": 4,  "name": { "en-GB": "Poppy seed", "en-US": "Poppy seed" }, "length_mm": 1,   "weight_g": 0.002, "icon": "poppy.png" },
+  { "week": 8,  "name": { "en-GB": "Raspberry",  "en-US": "Raspberry"  }, "length_mm": 16,  "weight_g": 1,     "icon": "raspberry.png" },
+  { "week": 12, "name": { "en-GB": "Lime",       "en-US": "Lime"       }, "length_mm": 58,  "weight_g": 14,    "icon": "lime.png" },
+  { "week": 16, "name": { "en-GB": "Avocado",    "en-US": "Avocado"    }, "length_mm": 120, "weight_g": 100,   "icon": "avocado.png" },
+  { "week": 20, "name": { "en-GB": "Banana",     "en-US": "Banana"     }, "length_mm": 160, "weight_g": 300,   "icon": "banana.png" },
+  { "week": 24, "name": { "en-GB": "Sweetcorn",  "en-US": "Corn on the cob" }, "length_mm": 210, "weight_g": 600, "icon": "sweetcorn.png" },
+  { "week": 28, "name": { "en-GB": "Aubergine",  "en-US": "Eggplant"   }, "length_mm": 260, "weight_g": 1000,  "icon": "aubergine.png" },
+  { "week": 32, "name": { "en-GB": "Butternut squash", "en-US": "Butternut squash" }, "length_mm": 300, "weight_g": 1700, "icon": "butternut.png" },
+  { "week": 36, "name": { "en-GB": "Cantaloupe", "en-US": "Cantaloupe" }, "length_mm": 330, "weight_g": 2800,  "icon": "cantaloupe.png" },
+  { "week": 40, "name": { "en-GB": "Watermelon", "en-US": "Watermelon" }, "length_mm": 360, "weight_g": 3400,  "icon": "watermelon.png" }
+]
+

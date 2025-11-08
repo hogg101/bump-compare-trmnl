@@ -1,0 +1,26 @@
+# Icons and assets (may be large)
+icons/
+assets/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Node modules (if we add build tools later)
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+

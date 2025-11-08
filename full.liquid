@@ -1,0 +1,190 @@
+{% comment %}
+  Bump Compare - TRMNL v2 Plugin
+  Prototype markup with week calculation and basic display
+{% endcomment %}
+
+{% comment %} Load weeks data {% endcomment %}
+{% assign weeks_data = '[
+  {"week":4,"name":{"en-GB":"Poppy seed","en-US":"Poppy seed"},"length_mm":1,"weight_g":0.002,"icon":"poppy.png"},
+  {"week":8,"name":{"en-GB":"Raspberry","en-US":"Raspberry"},"length_mm":16,"weight_g":1,"icon":"raspberry.png"},
+  {"week":12,"name":{"en-GB":"Lime","en-US":"Lime"},"length_mm":58,"weight_g":14,"icon":"lime.png"},
+  {"week":16,"name":{"en-GB":"Avocado","en-US":"Avocado"},"length_mm":120,"weight_g":100,"icon":"avocado.png"},
+  {"week":20,"name":{"en-GB":"Banana","en-US":"Banana"},"length_mm":160,"weight_g":300,"icon":"banana.png"},
+  {"week":24,"name":{"en-GB":"Sweetcorn","en-US":"Corn on the cob"},"length_mm":210,"weight_g":600,"icon":"sweetcorn.png"},
+  {"week":28,"name":{"en-GB":"Aubergine","en-US":"Eggplant"},"length_mm":260,"weight_g":1000,"icon":"aubergine.png"},
+  {"week":32,"name":{"en-GB":"Butternut squash","en-US":"Butternut squash"},"length_mm":300,"weight_g":1700,"icon":"butternut.png"},
+  {"week":36,"name":{"en-GB":"Cantaloupe","en-US":"Cantaloupe"},"length_mm":330,"weight_g":2800,"icon":"cantaloupe.png"},
+  {"week":40,"name":{"en-GB":"Watermelon","en-US":"Watermelon"},"length_mm":360,"weight_g":3400,"icon":"watermelon.png"}
+]' | parse_json %}
+
+{% comment %} Get settings with defaults {% endcomment %}
+{% assign custom_fields = trmnl.plugin_settings.custom_fields_values %}
+{% assign locale = custom_fields.locale | default: "en-GB" %}
+{% assign units = custom_fields.units | default: "metric" %}
+{% if units == "auto" %}
+  {% if locale == "en-US" %}
+    {% assign units = "imperial" %}
+  {% else %}
+    {% assign units = "metric" %}
+  {% endif %}
+{% endif %}
+{% assign month_anchor_day = custom_fields.month_anchor_day | default: 15 | plus: 0 %}
+
+{% comment %} Resolve due date {% endcomment %}
+{% assign due_date_str = null %}
+{% if custom_fields.due_date != blank %}
+  {% assign due_date_str = custom_fields.due_date %}
+{% elsif custom_fields.due_month != blank %}
+  {% assign due_date_str = custom_fields.due_month | append: "-" | append: month_anchor_day %}
+{% endif %}
+
+{% comment %} Calculate gestational week (client-side JS will handle this) {% endcomment %}
+
+<div class="bump-compare" data-due-date="{{ due_date_str }}" data-locale="{{ locale }}" data-units="{{ units }}" data-weeks='{{ weeks_data | json }}'>
+  <div class="week-display">
+    <div class="week-number">Week <span id="current-week">--</span></div>
+  </div>
+  <div class="comparator">
+    <div class="icon-container">
+      <img id="comparator-icon" src="" alt="" style="display: none;" />
+    </div>
+    <div class="comparator-name" id="comparator-name">--</div>
+    <div class="comparator-size" id="comparator-size">--</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const container = document.querySelector('.bump-compare');
+  if (!container) return;
+  
+  const dueDateStr = container.dataset.dueDate;
+  const locale = container.dataset.locale || 'en-GB';
+  const units = container.dataset.units || 'metric';
+  const weeksData = JSON.parse(container.dataset.weeks || '[]');
+  
+  if (!dueDateStr) {
+    document.getElementById('current-week').textContent = '?';
+    document.getElementById('comparator-name').textContent = 'Set due date in settings';
+    return;
+  }
+  
+  // Parse due date
+  const dueDate = new Date(dueDateStr + 'T00:00:00');
+  if (isNaN(dueDate.getTime())) {
+    document.getElementById('current-week').textContent = '?';
+    document.getElementById('comparator-name').textContent = 'Invalid date';
+    return;
+  }
+  
+  // Calculate gestational week: week = clamp(floor((280 - days_to_due) / 7), 0, 40)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const daysToDue = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+  const week = Math.max(0, Math.min(40, Math.floor((280 - daysToDue) / 7)));
+  
+  // Find comparator (exact match or nearest lower week)
+  let comparator = null;
+  for (let i = weeksData.length - 1; i >= 0; i--) {
+    if (weeksData[i].week <= week) {
+      comparator = weeksData[i];
+      break;
+    }
+  }
+  
+  if (!comparator) {
+    comparator = weeksData[0]; // Fallback to first
+  }
+  
+  // Display week
+  document.getElementById('current-week').textContent = week;
+  
+  // Display comparator name
+  const name = comparator.name[locale] || comparator.name['en-GB'];
+  document.getElementById('comparator-name').textContent = name;
+  
+  // Convert and display size
+  let lengthStr, weightStr;
+  if (units === 'imperial') {
+    const lengthIn = (comparator.length_mm / 25.4).toFixed(1);
+    const weightOz = comparator.weight_g / 28.35;
+    if (weightOz >= 16) {
+      const lbs = Math.floor(weightOz / 16);
+      const oz = Math.round(weightOz % 16);
+      weightStr = lbs + ' lb ' + oz + ' oz';
+    } else {
+      weightStr = weightOz.toFixed(1) + ' oz';
+    }
+    lengthStr = lengthIn + ' in';
+  } else {
+    lengthStr = comparator.length_mm + ' mm';
+    if (comparator.weight_g < 1) {
+      weightStr = (comparator.weight_g * 1000).toFixed(0) + ' mg';
+    } else {
+      weightStr = comparator.weight_g + ' g';
+    }
+  }
+  
+  document.getElementById('comparator-size').textContent = '~' + lengthStr + ' · ~' + weightStr;
+  
+  // Show icon if available (placeholder for now)
+  const iconEl = document.getElementById('comparator-icon');
+  if (comparator.icon) {
+    iconEl.src = comparator.icon;
+    iconEl.alt = name;
+    iconEl.style.display = 'block';
+  }
+})();
+</script>
+
+<style>
+.bump-compare {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.week-display {
+  margin-bottom: 1rem;
+}
+
+.week-number {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.comparator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-container {
+  width: 128px;
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container img {
+  max-width: 100%;
+  max-height: 100%;
+  image-rendering: pixelated;
+}
+
+.comparator-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.comparator-size {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+</style>
+
