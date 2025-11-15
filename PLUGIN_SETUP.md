@@ -11,7 +11,7 @@ This is a TRMNL v2 Private Plugin that displays the current gestational week and
    - Upload `settings.yml` (or create plugin and upload files via ZIP import)
    - Upload `full.liquid`, `half_horizontal.liquid`, `half_vertical.liquid`, `quadrant.liquid` to their respective viewport sections
    - Set up custom fields by pasting YAML from `custom_fields.yml` into the custom fields editor
-   - Icons are embedded as base64 in the markup (no separate upload needed)
+   - Icons are embedded as SVG in the markup (no separate upload needed)
 
 ## Custom Fields Setup
 
@@ -25,42 +25,46 @@ Use TRMNL's custom form builder to create these fields:
 
 ## Icon Assets
 
-Icons are embedded as base64 strings directly in the Liquid markup files. This means:
+Icons are embedded as SVG directly in the Liquid markup files. This means:
 - **No separate upload needed** - icons are part of the markup
-- **No external hosting required** - works offline
+- **No external hosting required** - no URLs, no CDN, no file hosting
+- **No external network calls** - everything is self-contained in the markup
+- **Works completely offline** - icons are embedded inline in the template code
 - **20 icons total** - see `ICONS.md` for complete list
 
 ### Creating Icons
 
 Icons should be:
-- **1-bit PNG** format
-- **~256×256 pixels** (or higher, will be scaled)
+- **SVG** format (Scalable Vector Graphics)
+- **Vector-based** - scalable to any size without quality loss
 - **Bold silhouettes** suitable for e-ink displays
-- Named according to the `icon` field in the weeks data (e.g., `poppy.png`, `raspberry.png`)
+- **Monochrome/1-bit style** - simple shapes optimized for e-ink
+- Named according to the `icon` field in the weeks data (e.g., `poppy.svg`, `raspberry.svg`)
 
-### Converting Images to 1-bit
+### Creating SVG Icons
 
-You can use ImageMagick to convert images:
+You can create SVG icons using:
+- Vector graphics software (Illustrator, Inkscape, Figma, etc.)
+- Code editors (hand-written SVG)
+- Convert from other formats and simplify to vector paths
 
-```bash
-convert input.png -monochrome -resize 256x256 output.png
-```
+SVG icons should use simple paths and shapes, avoiding complex gradients or effects for best e-ink display.
 
-Or with dithering:
+### Embedding Icons as SVG
 
-```bash
-convert input.png -colors 2 -ordered-dither o8x8 -resize 256x256 output.png
-```
+Once icons are created, embed them directly in the Liquid templates:
+- **No hosting needed** - icons are embedded directly in the markup files
+- **Inline SVG**: Open your SVG file, copy the entire `<svg>...</svg>` markup, and paste it directly into the Liquid template
+- Icons become part of the markup itself - no file references, no URLs, no external hosting
 
-### Embedding Icons as Base64
+**Example workflow:**
+1. Create `poppy.svg` file
+2. Open `poppy.svg` in a text editor
+3. Copy the entire SVG markup (everything from `<svg` to `</svg>`)
+4. Paste it into your Liquid template where the icon should appear
+5. Store it in a variable or data structure for reuse
 
-Once icons are created, use the provided script to convert them to base64:
-
-```bash
-./convert_icons_to_base64.sh
-```
-
-Then update the Liquid templates to include the base64 strings. See `ASSET_STRATEGY.md` for details.
+See `ASSET_STRATEGY.md` for details.
 
 ## How It Works
 
@@ -81,10 +85,10 @@ Then update the Liquid templates to include the base64 strings. See `ASSET_STRAT
 
 To add or replace icons:
 
-1. Create the icon as a 1-bit PNG
-2. Convert to base64 using `convert_icons_to_base64.sh`
-3. Update the weeks data in all Liquid template files (`full.liquid`, `half_horizontal.liquid`, etc.)
-4. Add the base64 string to the icon data structure in the templates
+1. Create the icon as an SVG file
+2. Embed the SVG markup directly in all Liquid template files (`full.liquid`, `half_horizontal.liquid`, etc.)
+3. Update the weeks data to reference the new icon
+4. Add the SVG markup to the icon data structure in the templates
 
 ## Interpolation
 

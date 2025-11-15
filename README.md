@@ -37,16 +37,16 @@ Embed a small JSON table inside the markup (avoids hosting). Example schema:
 
 ```json
 [
-  { "week": 4,  "name": { "en-GB": "Poppy seed", "en-US": "Poppy seed" }, "length_mm": 1,   "weight_g": 0.002, "icon": "poppy.png" },
-  { "week": 8,  "name": { "en-GB": "Raspberry",  "en-US": "Raspberry"  }, "length_mm": 16,  "weight_g": 1,     "icon": "raspberry.png" },
-  { "week": 12, "name": { "en-GB": "Lime",       "en-US": "Lime"       }, "length_mm": 58,  "weight_g": 14,    "icon": "lime.png" },
-  { "week": 16, "name": { "en-GB": "Avocado",    "en-US": "Avocado"    }, "length_mm": 120, "weight_g": 100,   "icon": "avocado.png" },
-  { "week": 20, "name": { "en-GB": "Banana",     "en-US": "Banana"     }, "length_mm": 160, "weight_g": 300,   "icon": "banana.png" },
-  { "week": 24, "name": { "en-GB": "Sweetcorn",  "en-US": "Corn on the cob" }, "length_mm": 210, "weight_g": 600, "icon": "sweetcorn.png" },
-  { "week": 28, "name": { "en-GB": "Aubergine",  "en-US": "Eggplant"   }, "length_mm": 260, "weight_g": 1000,  "icon": "aubergine.png" },
-  { "week": 32, "name": { "en-GB": "Butternut squash", "en-US": "Butternut squash" }, "length_mm": 300, "weight_g": 1700, "icon": "butternut.png" },
-  { "week": 36, "name": { "en-GB": "Cantaloupe", "en-US": "Cantaloupe" }, "length_mm": 330, "weight_g": 2800,  "icon": "cantaloupe.png" },
-  { "week": 40, "name": { "en-GB": "Watermelon", "en-US": "Watermelon" }, "length_mm": 360, "weight_g": 3400,  "icon": "watermelon.png" }
+  { "week": 4,  "name": { "en-GB": "Poppy seed", "en-US": "Poppy seed" }, "length_mm": 1,   "weight_g": 0.002, "icon": "poppy.svg" },
+  { "week": 8,  "name": { "en-GB": "Raspberry",  "en-US": "Raspberry"  }, "length_mm": 16,  "weight_g": 1,     "icon": "raspberry.svg" },
+  { "week": 12, "name": { "en-GB": "Lime",       "en-US": "Lime"       }, "length_mm": 58,  "weight_g": 14,    "icon": "lime.svg" },
+  { "week": 16, "name": { "en-GB": "Avocado",    "en-US": "Avocado"    }, "length_mm": 120, "weight_g": 100,   "icon": "avocado.svg" },
+  { "week": 20, "name": { "en-GB": "Banana",     "en-US": "Banana"     }, "length_mm": 160, "weight_g": 300,   "icon": "banana.svg" },
+  { "week": 24, "name": { "en-GB": "Sweetcorn",  "en-US": "Corn on the cob" }, "length_mm": 210, "weight_g": 600, "icon": "sweetcorn.svg" },
+  { "week": 28, "name": { "en-GB": "Aubergine",  "en-US": "Eggplant"   }, "length_mm": 260, "weight_g": 1000,  "icon": "aubergine.svg" },
+  { "week": 32, "name": { "en-GB": "Butternut squash", "en-US": "Butternut squash" }, "length_mm": 300, "weight_g": 1700, "icon": "butternut.svg" },
+  { "week": 36, "name": { "en-GB": "Cantaloupe", "en-US": "Cantaloupe" }, "length_mm": 330, "weight_g": 2800,  "icon": "cantaloupe.svg" },
+  { "week": 40, "name": { "en-GB": "Watermelon", "en-US": "Watermelon" }, "length_mm": 360, "weight_g": 3400,  "icon": "watermelon.svg" }
 ]
 ```
 
@@ -81,10 +81,12 @@ Embed a small JSON table inside the markup (avoids hosting). Example schema:
 
 ## Assets (icons)
 
-* **1-bit PNG** at ~256×256, bold silhouettes suited to e-ink.
+* **SVG** format, bold silhouettes suited to e-ink.
 * **20 icons total** covering weeks 0-40 (see `ICONS.md` for complete list).
-* Icons are **embedded as base64** in the markup (no external hosting required).
-* Prepare via a batch process (e.g., ImageMagick) to monochrome/1-bit with optional dithering. ([help.usetrmnl.com][2])
+* Icons are **embedded directly inline in the Liquid markup** - no hosting, no URLs, no external files.
+* The SVG markup (`<svg>...</svg>`) is pasted directly into the template files.
+* Designed as monochrome/1-bit style, simple vector shapes optimized for e-ink displays.
+* **Completely self-contained** - no external dependencies or network calls.
 
 ## Optional backend (later, only if needed)
 
@@ -108,7 +110,7 @@ If we decide to host data/assets centrally (e.g., dynamic copy, analytics), serv
    * Completed **markup files** (full.liquid, half_horizontal.liquid, half_vertical.liquid, quadrant.liquid).
    * Embedded **weeks data** (weeks 0–40 with 20 anchor points).
    * **Custom fields** schema (`custom_fields.yml`).
-   * **1-bit icon pack** (20 icons, base64 embedded).
+   * **SVG icon pack** (20 icons, embedded in markup).
 2. **README** for authors:
 
    * How to set due date/month, locale, and units.
