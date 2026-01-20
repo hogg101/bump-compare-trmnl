@@ -2,7 +2,7 @@
 
 ## Summary
 
-A single-purpose TRMNL v2 plugin that shows the current gestational week and a **lo-fi 1-bit** fruit/veg comparator. User sets an approximate due date (month or exact date). The plugin calculates the current week automatically and updates each refresh. No external hosting by default; all logic runs in the plugin’s markup (client-side). Optional fallback: Cloudflare Worker if we later decide to centralise data or A/B assets.
+A single-purpose TRMNL v2 plugin that shows the current gestational week and a **lo-fi 1-bit** fruit/veg comparator. User sets an approximate due date (month or exact date). The plugin calculates the current week automatically and updates each refresh. Logic runs in the plugin’s markup (client-side), while icon PNGs are hosted on GitHub. Optional fallback: Cloudflare Worker if we later decide to centralise data or A/B assets.
 
 ## Objectives
 
@@ -16,7 +16,7 @@ A single-purpose TRMNL v2 plugin that shows the current gestational week and a *
 
 * **One visual style only**: monochrome, 1-bit bitmaps (with optional dithering). ([help.usetrmnl.com][2])
 * **One comparator set** (produce). Keep naming UK-friendly; map US variants in localisation.
-* **No backend by default**: use TRMNL Private Plugin markup, custom fields, Liquid, and client-side JS. ([usetrmnl.com][3])
+* **No backend by default**: use TRMNL Private Plugin markup, custom fields, Liquid, and client-side JS; icons load from GitHub-hosted PNGs. ([usetrmnl.com][3])
 * **TRMNL v2**: adopt v2 layout, typography, and stricter markup requirements. ([usetrmnl.com][1])
 
 ## User Settings (Custom Fields)
@@ -37,20 +37,20 @@ Embed a small JSON table inside the markup (avoids hosting). Example schema:
 
 ```json
 [
-  { "week": 4,  "name": { "en-GB": "Poppy seed", "en-US": "Poppy seed" }, "length_mm": 1,   "weight_g": 0.002, "icon": "poppy.svg" },
-  { "week": 8,  "name": { "en-GB": "Raspberry",  "en-US": "Raspberry"  }, "length_mm": 16,  "weight_g": 1,     "icon": "raspberry.svg" },
-  { "week": 12, "name": { "en-GB": "Lime",       "en-US": "Lime"       }, "length_mm": 58,  "weight_g": 14,    "icon": "lime.svg" },
-  { "week": 16, "name": { "en-GB": "Avocado",    "en-US": "Avocado"    }, "length_mm": 120, "weight_g": 100,   "icon": "avocado.svg" },
-  { "week": 20, "name": { "en-GB": "Banana",     "en-US": "Banana"     }, "length_mm": 160, "weight_g": 300,   "icon": "banana.svg" },
-  { "week": 24, "name": { "en-GB": "Sweetcorn",  "en-US": "Corn on the cob" }, "length_mm": 210, "weight_g": 600, "icon": "sweetcorn.svg" },
-  { "week": 28, "name": { "en-GB": "Aubergine",  "en-US": "Eggplant"   }, "length_mm": 260, "weight_g": 1000,  "icon": "aubergine.svg" },
-  { "week": 32, "name": { "en-GB": "Butternut squash", "en-US": "Butternut squash" }, "length_mm": 300, "weight_g": 1700, "icon": "butternut.svg" },
-  { "week": 36, "name": { "en-GB": "Cantaloupe", "en-US": "Cantaloupe" }, "length_mm": 330, "weight_g": 2800,  "icon": "cantaloupe.svg" },
-  { "week": 40, "name": { "en-GB": "Watermelon", "en-US": "Watermelon" }, "length_mm": 360, "weight_g": 3400,  "icon": "watermelon.svg" }
+  { "week": 4,  "name": { "en-GB": "Poppy seed", "en-US": "Poppy seed" }, "length_mm": 1,   "weight_g": 0.002, "icon": "poppy.png" },
+  { "week": 8,  "name": { "en-GB": "Raspberry",  "en-US": "Raspberry"  }, "length_mm": 16,  "weight_g": 1,     "icon": "raspberry.png" },
+  { "week": 12, "name": { "en-GB": "Lime",       "en-US": "Lime"       }, "length_mm": 58,  "weight_g": 14,    "icon": "lime.png" },
+  { "week": 16, "name": { "en-GB": "Avocado",    "en-US": "Avocado"    }, "length_mm": 120, "weight_g": 100,   "icon": "avocado.png" },
+  { "week": 20, "name": { "en-GB": "Banana",     "en-US": "Banana"     }, "length_mm": 160, "weight_g": 300,   "icon": "banana.png" },
+  { "week": 24, "name": { "en-GB": "Sweetcorn",  "en-US": "Corn on the cob" }, "length_mm": 210, "weight_g": 600, "icon": "sweetcorn.png" },
+  { "week": 28, "name": { "en-GB": "Aubergine",  "en-US": "Eggplant"   }, "length_mm": 260, "weight_g": 1000,  "icon": "aubergine.png" },
+  { "week": 32, "name": { "en-GB": "Butternut squash", "en-US": "Butternut squash" }, "length_mm": 300, "weight_g": 1700, "icon": "butternut.png" },
+  { "week": 36, "name": { "en-GB": "Cantaloupe", "en-US": "Cantaloupe" }, "length_mm": 330, "weight_g": 2800,  "icon": "cantaloupe.png" },
+  { "week": 40, "name": { "en-GB": "Watermelon", "en-US": "Watermelon" }, "length_mm": 360, "weight_g": 3400,  "icon": "watermelon.png" }
 ]
 ```
 
-* Populate weeks **0–40** fully with 20 anchor weeks. Interpolate values between anchor weeks. Weeks 0-3 use the earliest anchor icon.
+* Provide explicit values for every week **0–40** (no interpolation). Week 0-3 share the earliest icon.
 * Localise `name` per `locale`; convert units at render time.
 
 ## Rendering & Layout (v2)
@@ -81,20 +81,21 @@ Embed a small JSON table inside the markup (avoids hosting). Example schema:
 
 ## Assets (icons)
 
-* **SVG** format, bold silhouettes suited to e-ink.
-* **20 icons total** covering weeks 0-40 (see `ICONS.md` for complete list).
-* Icons are **embedded directly inline in the Liquid markup** - no hosting, no URLs, no external files.
-* The SVG markup (`<svg>...</svg>`) is pasted directly into the template files.
-* Designed as monochrome/1-bit style, simple vector shapes optimized for e-ink displays.
-* **Completely self-contained** - no external dependencies or network calls.
+* **PNG** format (1-bit or dithered), bold silhouettes suited to e-ink.
+* **38 icons total** covering weeks 0-40 (one for weeks 0-3, plus one each for weeks 4-40). See `weeks.md` for the complete list.
+* Icons are **hosted on GitHub** and loaded via `raw.githubusercontent.com` URLs using `icon_base_url`.
+* Designed as monochrome/1-bit style, simple silhouettes optimized for e-ink displays.
+* **External calls are limited to icons** hosted on GitHub.
 
-## Optional backend (later, only if needed)
+### Icon hosting setup
 
-If we decide to host data/assets centrally (e.g., dynamic copy, analytics), serve **markup JSON** from a **Cloudflare Worker**:
-
-* Free plan: up to **100k requests/day**; CPU time per invocation is modest on free tier. ([Cloudflare Docs][7])
-* Keep the Worker stateless; ship icons via CDN or Pages Assets.
-* TRMNL “Plugin Markup URL” points to the Worker endpoint that returns `markup` strings. ([docs.usetrmnl.com][8])
+* Store PNG files in `images/` in this repo.
+* Make the repository public so `raw.githubusercontent.com` can serve the images.
+* Set the `icon_base_url` variable in each Liquid template:
+  ```liquid
+  {% assign icon_base_url = "https://raw.githubusercontent.com/USERNAME/bump-compare-trmnl/main/images" %}
+  ```
+* Build icon URLs in JS with `iconEl.src = '{{ icon_base_url }}/' + comparator.icon;`.
 
 ## TRMNL features we’ll use
 
@@ -108,36 +109,21 @@ If we decide to host data/assets centrally (e.g., dynamic copy, analytics), serv
 1. **Private Plugin** (v2-compliant) ready to install:
 
    * Completed **markup files** (full.liquid, half_horizontal.liquid, half_vertical.liquid, quadrant.liquid).
-   * Embedded **weeks data** (weeks 0–40 with 20 anchor points).
+   * Embedded **weeks data** (weeks 0–40).
    * **Custom fields** schema (`custom_fields.yml`).
-   * **SVG icon pack** (20 icons, embedded in markup).
+   * **PNG icon pack** (hosted in `images/`).
 2. **README** for authors:
 
    * How to set due date/month, locale, and units.
    * How interpolation works and how to add/replace icons.
-3. (Optional) **Cloudflare Worker** stub and deploy script (commented out by default).
 
 ## Acceptance Criteria
 
 * Works on TRMNL hardware and web preview using **Framework v2**.
-* No external network calls in the default build.
+* External network calls are limited to GitHub-hosted icon PNGs.
 * Correct week calculation across DST/offsets using TRMNL-provided timezone variables.
-* Full coverage of weeks 0–40 with 20 recognisable comparators.
 * Localisation switch changes names and units appropriately.
 * All images display crisply in 1-bit at all TRMNL render sizes.
-
-## Milestones
-
-* **M1 — Prototype (markup-only)**: ✅ Complete - week calc, locale/units toggle, v2 layout, all viewport sizes.
-* **M2 — Full Data & Icons**: populate weeks 4–40, interpolate sizes, complete icon set.
-* **M3 — Polish**: typography tweaks for half/quadrant, error states (missing date), exportable ZIP.
-* **M4 — (Optional) Worker**: add Worker endpoint, move data/icons to CDN, flip plugin to remote markup.
-
-## Risks & Notes
-
-* **Naming consistency** (aubergine/eggplant, sweetcorn/corn): covered via localisation.
-* **Icon legibility**: enforce bold silhouettes; test on real device.
-* **Framework v2 rules**: validate with the v2 Troubleshooting guide before shipping. ([usetrmnl.com][1])
 
 ---
 

@@ -11,7 +11,7 @@ This is a TRMNL v2 Private Plugin that displays the current gestational week and
    - Upload `settings.yml` (or create plugin and upload files via ZIP import)
    - Upload `full.liquid`, `half_horizontal.liquid`, `half_vertical.liquid`, `quadrant.liquid` to their respective viewport sections
    - Set up custom fields by pasting YAML from `custom_fields.yml` into the custom fields editor
-   - Icons are embedded as SVG in the markup (no separate upload needed)
+   - Icons are hosted as PNGs on GitHub (no uploads to TRMNL)
 
 ## Custom Fields Setup
 
@@ -25,44 +25,41 @@ Use TRMNL's custom form builder to create these fields:
 
 ## Icon Assets
 
-Icons are embedded as SVG directly in the Liquid markup files. This means:
-- **No separate upload needed** - icons are part of the markup
-- **No external hosting required** - no URLs, no CDN, no file hosting
-- **No external network calls** - everything is self-contained in the markup
-- **Works completely offline** - icons are embedded inline in the template code
-- **20 icons total** - see `ICONS.md` for complete list
+Icons are hosted as PNG files in the GitHub repo and loaded at runtime. This means:
+- **No TRMNL upload needed** - icons live in the repo
+- **External hosting required** - icons are fetched from GitHub's CDN
+- **Simple updates** - push new PNGs to the repo
+- **38 icons total** - see `weeks.md` for complete list
 
 ### Creating Icons
 
 Icons should be:
-- **SVG** format (Scalable Vector Graphics)
-- **Vector-based** - scalable to any size without quality loss
+- **PNG** format (1-bit or dithered)
 - **Bold silhouettes** suitable for e-ink displays
 - **Monochrome/1-bit style** - simple shapes optimized for e-ink
-- Named according to the `icon` field in the weeks data (e.g., `poppy.svg`, `raspberry.svg`)
+- Named according to the `icon` field in the weeks data (e.g., `poppy.png`, `raspberry.png`)
 
-### Creating SVG Icons
+### Creating PNG Icons
 
-You can create SVG icons using:
-- Vector graphics software (Illustrator, Inkscape, Figma, etc.)
-- Code editors (hand-written SVG)
-- Convert from other formats and simplify to vector paths
+You can create PNG icons using:
+- Raster or vector tools (export to PNG from Figma/Illustrator/Inkscape)
+- Pixel editors (Aseprite, Photoshop, etc.)
+- Convert from other formats and simplify for 1-bit display
 
-SVG icons should use simple paths and shapes, avoiding complex gradients or effects for best e-ink display.
+PNG icons should be exported with a simple silhouette and high contrast for best e-ink display.
 
-### Embedding Icons as SVG
+### Hosting Icons on GitHub
 
-Once icons are created, embed them directly in the Liquid templates:
-- **No hosting needed** - icons are embedded directly in the markup files
-- **Inline SVG**: Open your SVG file, copy the entire `<svg>...</svg>` markup, and paste it directly into the Liquid template
-- Icons become part of the markup itself - no file references, no URLs, no external hosting
+Once icons are created, host them in the repo and reference them from Liquid:
+- Store PNGs in the `images/` directory
+- Set `icon_base_url` in each Liquid template to your GitHub raw URL
+- Icons load via `icon_base_url` + filename at runtime
 
 **Example workflow:**
-1. Create `poppy.svg` file
-2. Open `poppy.svg` in a text editor
-3. Copy the entire SVG markup (everything from `<svg` to `</svg>`)
-4. Paste it into your Liquid template where the icon should appear
-5. Store it in a variable or data structure for reuse
+1. Create `poppy.png` file
+2. Add it to the `images/` directory in the repo
+3. Update `icon_base_url` in each Liquid template
+4. Reference `poppy.png` in the weeks data
 
 See `ASSET_STRATEGY.md` for details.
 
@@ -85,10 +82,10 @@ See `ASSET_STRATEGY.md` for details.
 
 To add or replace icons:
 
-1. Create the icon as an SVG file
-2. Embed the SVG markup directly in all Liquid template files (`full.liquid`, `half_horizontal.liquid`, etc.)
-3. Update the weeks data to reference the new icon
-4. Add the SVG markup to the icon data structure in the templates
+1. Create the icon as a PNG file
+2. Add the PNG to the `images/` directory in the repo
+3. Update the weeks data to reference the new icon filename
+4. Confirm the `icon_base_url` is correct in each Liquid template
 
 ## Interpolation
 
@@ -101,4 +98,3 @@ For weeks between anchor points (e.g., week 5, 6, 7 between poppy seed at week 4
 - Test unit conversion (metric vs imperial)
 - Verify icons display correctly on e-ink preview
 - Test with missing due date (should show helpful message)
-

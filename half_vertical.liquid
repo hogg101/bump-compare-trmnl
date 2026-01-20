@@ -8,7 +8,7 @@
 
 {% comment %} Load weeks data {% endcomment %}
 {% assign weeks_data = '[
-  {"week":4,"name":{"en-GB":"Poppy seed","en-US":"Poppy seed"},"length_mm":1,"weight_g":0.002,"icon":"poppy.svg"},
+  {"week":4,"name":{"en-GB":"Poppy seed","en-US":"Poppy seed"},"length_mm":1,"weight_g":0.002,"icon":"poppy-seed.svg"},
   {"week":8,"name":{"en-GB":"Raspberry","en-US":"Raspberry"},"length_mm":16,"weight_g":1,"icon":"raspberry.svg"},
   {"week":12,"name":{"en-GB":"Lime","en-US":"Lime"},"length_mm":58,"weight_g":14,"icon":"lime.svg"},
   {"week":16,"name":{"en-GB":"Avocado","en-US":"Avocado"},"length_mm":120,"weight_g":100,"icon":"avocado.svg"},
@@ -41,16 +41,33 @@
   {% assign due_date_str = custom_fields.due_month | append: "-" | append: month_anchor_day %}
 {% endif %}
 
-<div class="bump-compare bump-compare--compact" data-due-date="{{ due_date_str }}" data-locale="{{ locale }}" data-units="{{ units }}" data-weeks='{{ weeks_data | json }}'>
-  <div class="week-display">
-    <div class="week-number">Week <span id="current-week">--</span></div>
+<div class="bump-compare-shell bump-compare-shell--compact">
+  <div class="title_bar">
+    <img class="image" src="/images/plugins/trmnl--render.svg" alt="TRMNL plugin icon">
+    <span class="title">Bump Compare</span>
   </div>
-  <div class="comparator">
-    <div class="icon-container">
-      <img id="comparator-icon" src="" alt="" style="display: none;" />
+  <div class="bump-compare bump-compare--compact" data-due-date="{{ due_date_str }}" data-locale="{{ locale }}" data-units="{{ units }}" data-weeks='{{ weeks_data | json }}'>
+    <div class="week-display">
+      <div class="week-number">Week <span id="current-week">--</span></div>
+      <div class="trimester-display" id="trimester-display">--</div>
     </div>
-    <div class="comparator-name" id="comparator-name">--</div>
-    <div class="comparator-size" id="comparator-size">--</div>
+    <div class="comparator">
+      <div class="icon-container">
+        <img id="comparator-icon" src="" alt="" style="display: none;" />
+      </div>
+      <div class="comparator-name" id="comparator-name">--</div>
+      <div class="comparator-size" id="comparator-size">--</div>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar bg--white">
+        <div class="progress-fill" id="progress-fill">
+          <div class="progress-tone bg--gray-55"></div>
+          <div class="progress-tone bg--gray-30"></div>
+          <div class="progress-tone bg--black"></div>
+        </div>
+      </div>
+      <div class="progress-text" id="progress-text">--%</div>
+    </div>
   </div>
 </div>
 
@@ -80,6 +97,14 @@
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const daysToDue = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+
+  if (daysToDue > 280) {
+    document.getElementById('current-week').textContent = '!';
+    document.getElementById('comparator-name').textContent = 'Due date too far';
+    document.getElementById('comparator-size').textContent = 'Date must be within 9 months';
+    return;
+  }
+
   const week = Math.max(0, Math.min(40, Math.floor((280 - daysToDue) / 7)));
   
   let comparator = null;
@@ -95,6 +120,22 @@
   }
   
   document.getElementById('current-week').textContent = week;
+
+  // Determine and display trimester
+  let trimester;
+  if (week <= 12) {
+    trimester = 'First Trimester';
+  } else if (week <= 28) {
+    trimester = 'Second Trimester';
+  } else {
+    trimester = 'Third Trimester';
+  }
+  document.getElementById('trimester-display').textContent = trimester;
+
+  // Update progress bar
+  const progressPercent = Math.max(0, Math.min(100, ((280 - daysToDue) / 280) * 100));
+  document.getElementById('progress-fill').style.width = progressPercent + '%';
+  document.getElementById('progress-text').textContent = "You're " + Math.round(progressPercent) + "% of the way along!";
   
   const name = comparator.name[locale] || comparator.name['en-GB'];
   document.getElementById('comparator-name').textContent = name;
@@ -113,14 +154,14 @@
     lengthStr = lengthIn + ' in';
   } else {
     lengthStr = comparator.length_mm + ' mm';
-    if (comparator.weight_g < 1) {
-      weightStr = (comparator.weight_g * 1000).toFixed(0) + ' mg';
+    if (comparator.weight_g >= 1000) {
+      weightStr = (comparator.weight_g / 1000).toFixed(1) + ' kg';
     } else {
       weightStr = comparator.weight_g + ' g';
     }
   }
   
-  document.getElementById('comparator-size').textContent = '~' + lengthStr + ' · ~' + weightStr;
+  document.getElementById('comparator-size').textContent = 'about ' + lengthStr + ' long or ' + weightStr;
   
   const iconEl = document.getElementById('comparator-icon');
   if (comparator.icon) {
@@ -132,14 +173,54 @@
 </script>
 
 <style>
+.bump-compare-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 0.4rem 0.75rem 0.25rem;
+  box-sizing: border-box;
+}
+
+.title_bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.3rem;
+  font-family: "Arial Black", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.85px;
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.title_bar .image {
+  height: 18px;
+  width: 18px;
+  flex-shrink: 0;
+}
+
+.title_bar .title {
+  font-size: inherit;
+  white-space: nowrap;
+}
+
 .bump-compare {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
-  padding: 0.75rem;
-  height: 100%;
+  padding: 0.4rem 0 0.2rem;
+  width: 100%;
+  flex: 1 1 auto;
+  gap: 0.35rem;
+  box-sizing: border-box;
 }
 
 .bump-compare--compact .week-number {
@@ -164,20 +245,79 @@
 }
 
 .week-number {
+  font-family: "Times New Roman", serif;
+  font-style: italic;
   font-weight: bold;
+  font-size: 1.85rem;
+  margin-bottom: 0.1rem;
+}
+
+.trimester-display {
+  font-size: 0.875rem;
+  font-family: "Arial Black", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 900;
+  margin-top: -0.25rem;
+}
+
+.progress-container {
+  margin-top: 0.3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.progress-bar {
+  width: 97%;
+  height: 12px;
+  border: 2px solid #000;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: 2px 2px 0px #888;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-tone {
+  flex: 1;
+}
+
+.bg--black { background-color: #000; }
+.bg--white { background-color: #fff; }
+.bg--gray-30 { background-color: #4d4d4d; }
+.bg--gray-55 { background-color: #8c8c8c; }
+
+.progress-text {
+  font-size: 0.72rem;
+  font-family: "Courier New", monospace;
+  color: #444;
 }
 
 .comparator {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  flex: 1 1 auto;
 }
 
 .icon-container {
+  width: 118px;
+  height: 118px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0.5rem 0;
 }
 
 .icon-container img {
@@ -187,11 +327,17 @@
 }
 
 .comparator-name {
-  font-weight: 600;
+  font-family: "Arial Black", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  font-weight: 900;
+  font-size: 1.1rem;
 }
 
 .comparator-size {
-  opacity: 0.8;
+  font-family: "Courier New", monospace;
+  color: #444;
+  font-size: 0.8rem;
 }
 </style>
 
