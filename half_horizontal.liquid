@@ -8,16 +8,47 @@
 
 {% comment %} Load weeks data {% endcomment %}
 {% assign weeks_data = '[
-  {"week":4,"name":{"en-GB":"Poppy seed","en-US":"Poppy seed"},"length_mm":1,"weight_g":0.002,"icon":"poppy-seed.svg"},
-  {"week":8,"name":{"en-GB":"Raspberry","en-US":"Raspberry"},"length_mm":16,"weight_g":1,"icon":"raspberry.svg"},
-  {"week":12,"name":{"en-GB":"Lime","en-US":"Lime"},"length_mm":58,"weight_g":14,"icon":"lime.svg"},
-  {"week":16,"name":{"en-GB":"Avocado","en-US":"Avocado"},"length_mm":120,"weight_g":100,"icon":"avocado.svg"},
-  {"week":20,"name":{"en-GB":"Banana","en-US":"Banana"},"length_mm":160,"weight_g":300,"icon":"banana.svg"},
-  {"week":24,"name":{"en-GB":"Sweetcorn","en-US":"Corn on the cob"},"length_mm":210,"weight_g":600,"icon":"sweetcorn.svg"},
-  {"week":28,"name":{"en-GB":"Aubergine","en-US":"Eggplant"},"length_mm":260,"weight_g":1000,"icon":"aubergine.svg"},
-  {"week":32,"name":{"en-GB":"Butternut squash","en-US":"Butternut squash"},"length_mm":300,"weight_g":1700,"icon":"butternut.svg"},
-  {"week":36,"name":{"en-GB":"Cantaloupe","en-US":"Cantaloupe"},"length_mm":330,"weight_g":2800,"icon":"cantaloupe.svg"},
-  {"week":40,"name":{"en-GB":"Watermelon","en-US":"Watermelon"},"length_mm":360,"weight_g":3400,"icon":"watermelon.svg"}
+  {"week":0,"name":{"en-GB":"Very early stage","en-US":"Very early stage"},"length_mm":0.2,"weight_g":0.001,"icon":"microscope.png","blurb":{"en-GB":"Tiny tenant just signed the lease.","en-US":"Tiny tenant just signed the lease."}},
+  {"week":1,"name":{"en-GB":"Very early stage","en-US":"Very early stage"},"length_mm":0.3,"weight_g":0.001,"icon":"microscope.png","blurb":{"en-GB":"Currently smaller than a sprinkle and already the boss.","en-US":"Currently smaller than a sprinkle and already the boss."}},
+  {"week":2,"name":{"en-GB":"Very early stage","en-US":"Very early stage"},"length_mm":0.4,"weight_g":0.001,"icon":"microscope.png","blurb":{"en-GB":"Growing quietly like a top secret recipe.","en-US":"Growing quietly like a top secret recipe."}},
+  {"week":3,"name":{"en-GB":"Very early stage","en-US":"Very early stage"},"length_mm":0.6,"weight_g":0.001,"icon":"microscope.png","blurb":{"en-GB":"Microscopic and mighty, with big plans.","en-US":"Microscopic and mighty, with big plans."}},
+  {"week":4,"name":{"en-GB":"Poppy seed","en-US":"Poppy seed"},"length_mm":1,"weight_g":0.002,"icon":"poppyseed.png","blurb":{"en-GB":"Poppy seed vibes and maximum potential.","en-US":"Poppy seed vibes and maximum potential."}},
+  {"week":5,"name":{"en-GB":"Sesame seed","en-US":"Sesame seed"},"length_mm":2,"weight_g":0.005,"icon":"sesameseed.png","blurb":{"en-GB":"Sesame size, still stealing all the attention.","en-US":"Sesame size, still stealing all the attention."}},
+  {"week":6,"name":{"en-GB":"Pea","en-US":"Pea"},"length_mm":4,"weight_g":0.02,"icon":"pea.png","blurb":{"en-GB":"Pea tiny and already pea-k performance.","en-US":"Pea tiny and already pea-k performance."}},
+  {"week":7,"name":{"en-GB":"Blueberry","en-US":"Blueberry"},"length_mm":9,"weight_g":0.4,"icon":"blueberry.png","blurb":{"en-GB":"Blueberry era: small, round, and iconic.","en-US":"Blueberry era: small, round, and iconic."}},
+  {"week":8,"name":{"en-GB":"Raspberry","en-US":"Raspberry"},"length_mm":16,"weight_g":1,"icon":"raspberry.png","blurb":{"en-GB":"Raspberry mode activated, tiny but dramatic.","en-US":"Raspberry mode activated, tiny but dramatic."}},
+  {"week":9,"name":{"en-GB":"Grape","en-US":"Grape"},"length_mm":23,"weight_g":2,"icon":"grape.png","blurb":{"en-GB":"Grape expectations are officially underway.","en-US":"Grape expectations are officially underway."}},
+  {"week":10,"name":{"en-GB":"Olive","en-US":"Olive"},"length_mm":31,"weight_g":4,"icon":"olive.png","blurb":{"en-GB":"Olive this stage, honestly.","en-US":"Olive this stage, honestly."}},
+  {"week":11,"name":{"en-GB":"Fig","en-US":"Fig"},"length_mm":41,"weight_g":7,"icon":"fig.png","blurb":{"en-GB":"Figuring things out one wiggle at a time.","en-US":"Figuring things out one wiggle at a time."}},
+  {"week":12,"name":{"en-GB":"Lime","en-US":"Lime"},"length_mm":54,"weight_g":14,"icon":"lime.png","blurb":{"en-GB":"Lime sized and full of zesty ambition.","en-US":"Lime sized and full of zesty ambition."}},
+  {"week":13,"name":{"en-GB":"Lemon","en-US":"Lemon"},"length_mm":74,"weight_g":23,"icon":"lemon.png","blurb":{"en-GB":"Lemon stage: sweet, sour, and unstoppable.","en-US":"Lemon stage: sweet, sour, and unstoppable."}},
+  {"week":14,"name":{"en-GB":"Nectarine","en-US":"Nectarine"},"length_mm":87,"weight_g":43,"icon":"nectarine.png","blurb":{"en-GB":"Nectarine now, still no inside voice.","en-US":"Nectarine now, still no inside voice."}},
+  {"week":15,"name":{"en-GB":"Apple","en-US":"Apple"},"length_mm":101,"weight_g":70,"icon":"apple.png","blurb":{"en-GB":"Apple sized and already core to everything.","en-US":"Apple sized and already core to everything."}},
+  {"week":16,"name":{"en-GB":"Avocado","en-US":"Avocado"},"length_mm":116,"weight_g":100,"icon":"avocado.png","blurb":{"en-GB":"Avocado level achieved: smooth growth ahead.","en-US":"Avocado level achieved: smooth growth ahead."}},
+  {"week":17,"name":{"en-GB":"Pomegranate","en-US":"Pomegranate"},"length_mm":130,"weight_g":140,"icon":"pomegranate.png","blurb":{"en-GB":"Pomegranate phase: extra seeds, extra flair.","en-US":"Pomegranate phase: extra seeds, extra flair."}},
+  {"week":18,"name":{"en-GB":"Artichoke","en-US":"Artichoke"},"length_mm":142,"weight_g":190,"icon":"artichoke.png","blurb":{"en-GB":"Artichoke week, layers on layers.","en-US":"Artichoke week, layers on layers."}},
+  {"week":19,"name":{"en-GB":"Mango","en-US":"Mango"},"length_mm":154,"weight_g":240,"icon":"mango.png","blurb":{"en-GB":"Mango sized and bringing tropical energy.","en-US":"Mango sized and bringing tropical energy."}},
+  {"week":20,"name":{"en-GB":"Grapefruit","en-US":"Grapefruit"},"length_mm":164,"weight_g":300,"icon":"grapefruit.png","blurb":{"en-GB":"Grapefruit stage, round and ready for snacks.","en-US":"Grapefruit stage, round and ready for snacks."}},
+  {"week":21,"name":{"en-GB":"Swede","en-US":"Rutabaga"},"length_mm":174,"weight_g":360,"icon":"swede.png","blurb":{"en-GB":"Swede dreams and tiny kicks.","en-US":"Rutabaga dreams and tiny kicks."}},
+  {"week":22,"name":{"en-GB":"Papaya","en-US":"Papaya"},"length_mm":184,"weight_g":430,"icon":"papaya.png","blurb":{"en-GB":"Papaya power with a side of chaos.","en-US":"Papaya power with a side of chaos."}},
+  {"week":23,"name":{"en-GB":"Aubergine","en-US":"Eggplant"},"length_mm":194,"weight_g":501,"icon":"aubergine.png","blurb":{"en-GB":"Aubergine energy, glossy and growing.","en-US":"Eggplant energy, glossy and growing."}},
+  {"week":24,"name":{"en-GB":"Courgette","en-US":"Zucchini"},"length_mm":204,"weight_g":600,"icon":"courgette.png","blurb":{"en-GB":"Courgette status: long, lean, and busy.","en-US":"Zucchini status: long, lean, and busy."}},
+  {"week":25,"name":{"en-GB":"Pointed cabbage","en-US":"Pointed cabbage"},"length_mm":214,"weight_g":660,"icon":"pointedcabbage.png","blurb":{"en-GB":"Pointed cabbage week, very serious produce.","en-US":"Pointed cabbage week, very serious produce."}},
+  {"week":26,"name":{"en-GB":"Round lettuce","en-US":"Round lettuce"},"length_mm":224,"weight_g":760,"icon":"roundlettuce.png","blurb":{"en-GB":"Round lettuce vibes, cute and crunchy.","en-US":"Round lettuce vibes, cute and crunchy."}},
+  {"week":27,"name":{"en-GB":"Red cabbage","en-US":"Red cabbage"},"length_mm":234,"weight_g":875,"icon":"redcabbage.png","blurb":{"en-GB":"Red cabbage mode: colorful and confident.","en-US":"Red cabbage mode: colorful and confident."}},
+  {"week":28,"name":{"en-GB":"Cauliflower","en-US":"Cauliflower"},"length_mm":244,"weight_g":1005,"icon":"cauliflower.png","blurb":{"en-GB":"Cauliflower chapter, fluffy and focused.","en-US":"Cauliflower chapter, fluffy and focused."}},
+  {"week":29,"name":{"en-GB":"Savoy cabbage","en-US":"Savoy cabbage"},"length_mm":254,"weight_g":1150,"icon":"savoycabbage.png","blurb":{"en-GB":"Savoy cabbage stage with extra texture.","en-US":"Savoy cabbage stage with extra texture."}},
+  {"week":30,"name":{"en-GB":"Butternut squash","en-US":"Butternut squash"},"length_mm":264,"weight_g":1319,"icon":"butternutsquash.png","blurb":{"en-GB":"Butternut squash era, getting sturdy.","en-US":"Butternut squash era, getting sturdy."}},
+  {"week":31,"name":{"en-GB":"Coconut","en-US":"Coconut"},"length_mm":274,"weight_g":1502,"icon":"coconut.png","blurb":{"en-GB":"Coconut sized and low key legendary.","en-US":"Coconut sized and low key legendary."}},
+  {"week":32,"name":{"en-GB":"Pineapple","en-US":"Pineapple"},"length_mm":284,"weight_g":1702,"icon":"pineapple.png","blurb":{"en-GB":"Pineapple week: spiky look, sweet core.","en-US":"Pineapple week: spiky look, sweet core."}},
+  {"week":33,"name":{"en-GB":"Cantaloupe melon","en-US":"Cantaloupe"},"length_mm":294,"weight_g":1918,"icon":"cantaloupemelon.png","blurb":{"en-GB":"Cantaloupe moment, mellow and mighty.","en-US":"Cantaloupe moment, mellow and mighty."}},
+  {"week":34,"name":{"en-GB":"Galia melon","en-US":"Galia melon"},"length_mm":304,"weight_g":2146,"icon":"galiamelon.png","blurb":{"en-GB":"Galia melon phase, smooth growth continues.","en-US":"Galia melon phase, smooth growth continues."}},
+  {"week":35,"name":{"en-GB":"Honeydew melon","en-US":"Honeydew melon"},"length_mm":314,"weight_g":2383,"icon":"honeydewmelon.png","blurb":{"en-GB":"Honeydew week, sweet progress all around.","en-US":"Honeydew week, sweet progress all around."}},
+  {"week":36,"name":{"en-GB":"Spaghetti squash","en-US":"Spaghetti squash"},"length_mm":324,"weight_g":2622,"icon":"spaghettisquash.png","blurb":{"en-GB":"Spaghetti squash stage, noodle level moves.","en-US":"Spaghetti squash stage, noodle level moves."}},
+  {"week":37,"name":{"en-GB":"Crown prince squash","en-US":"Crown prince squash"},"length_mm":334,"weight_g":2859,"icon":"crownprincesquash.png","blurb":{"en-GB":"Crown prince squash, basically royalty.","en-US":"Crown prince squash, basically royalty."}},
+  {"week":38,"name":{"en-GB":"Marrow","en-US":"Marrow squash"},"length_mm":344,"weight_g":3083,"icon":"marrow.png","blurb":{"en-GB":"Marrow moment: long stretch, big gains.","en-US":"Marrow squash moment: long stretch, big gains."}},
+  {"week":39,"name":{"en-GB":"Watermelon","en-US":"Watermelon"},"length_mm":354,"weight_g":3288,"icon":"watermelon.png","blurb":{"en-GB":"Watermelon week, now entering heavyweight mode.","en-US":"Watermelon week, now entering heavyweight mode."}},
+  {"week":40,"name":{"en-GB":"Pumpkin","en-US":"Pumpkin"},"length_mm":362,"weight_g":3462,"icon":"pumpkin.png","blurb":{"en-GB":"Pumpkin finale: plump, proud, and ready.","en-US":"Pumpkin finale: plump, proud, and ready."}}
 ]' | parse_json %}
 
 {% comment %} Get settings with defaults {% endcomment %}
@@ -56,6 +87,7 @@
         <img id="comparator-icon" src="" alt="" style="display: none;" />
       </div>
       <div class="comparator-name" id="comparator-name">--</div>
+      <div class="comparator-blurb" id="comparator-blurb">--</div>
       <div class="comparator-size" id="comparator-size">--</div>
     </div>
     <div class="progress-container">
@@ -107,16 +139,12 @@
 
   const week = Math.max(0, Math.min(40, Math.floor((280 - daysToDue) / 7)));
   
-  let comparator = null;
-  for (let i = weeksData.length - 1; i >= 0; i--) {
-    if (weeksData[i].week <= week) {
-      comparator = weeksData[i];
-      break;
-    }
-  }
-  
+  let comparator = weeksData.find(function(entry) {
+    return entry.week === week;
+  });
+
   if (!comparator) {
-    comparator = weeksData[0];
+    comparator = weeksData[Math.max(0, Math.min(weeksData.length - 1, week))] || weeksData[0];
   }
   
   document.getElementById('current-week').textContent = week;
@@ -139,6 +167,8 @@
   
   const name = comparator.name[locale] || comparator.name['en-GB'];
   document.getElementById('comparator-name').textContent = name;
+  const blurb = comparator.blurb && (comparator.blurb[locale] || comparator.blurb['en-GB']) || '';
+  document.getElementById('comparator-blurb').textContent = blurb;
   
   let lengthStr, weightStr;
   if (units === 'imperial') {
@@ -234,6 +264,10 @@
 
 .bump-compare--compact .comparator-name {
   font-size: 1rem;
+}
+
+.bump-compare--compact .comparator-blurb {
+  font-size: 0.72rem;
 }
 
 .bump-compare--compact .comparator-size {
@@ -334,10 +368,18 @@
   font-size: 0.95rem;
 }
 
+.comparator-blurb {
+  max-width: 95%;
+  margin: -0.1rem auto 0.1rem;
+  font-family: "Times New Roman", serif;
+  font-style: italic;
+  line-height: 1.2;
+  font-size: 0.74rem;
+}
+
 .comparator-size {
   font-family: "Courier New", monospace;
   color: #444;
   font-size: 0.7rem;
 }
 </style>
-
