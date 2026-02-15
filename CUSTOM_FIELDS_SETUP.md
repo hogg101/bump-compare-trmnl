@@ -29,7 +29,7 @@ Set `locale` so users see the naming they expect (for example, `courgette` in `e
 
 If custom fields still don't work:
 
-1. **Check the field key names** - they must match exactly: `due_date`, `locale`, `units`
+1. **Check the field key names** - they must match exactly: `due_date`, `author_bio`, `locale`, `units`
 2. **Verify in Liquid template** - the markup accesses them as `custom_fields.due_date`, `custom_fields.locale`, etc.
 3. **Check TRMNL's JS Logs** - in the Markup Editor, expand "JS Logs" to see if there are any errors
 4. **Enable Debug Logs** - from plugin settings, enable debug logs to see server-side errors

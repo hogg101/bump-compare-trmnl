@@ -5,6 +5,15 @@
   placeholder: YYYY-MM-DD
   optional: true
 
+- keyname: author_bio
+  field_type: author_bio
+  name: About the Creator
+  category: life,personal
+  description: London-based systems integrator and CTO at Twisted Pear, focused on networking, WiFi, surveillance, and automation/control systems for lighting and AV.
+  email_address: [email protected]
+  github_url: https://github.com/hogg101/bump-compare-trmnl
+  learn_more_url: https://www.jameshogg.tech
+
 - keyname: locale
   field_type: select
   name: Locale

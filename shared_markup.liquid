@@ -78,25 +78,296 @@
       </div>
       <div class="comparator">
         <div class="icon-container">
-          <img id="comparator-icon" class="image image--contain 1bit:image-dither 2bit:image-dither" src="" alt="" style="display: none;" />
+          <img id="comparator-icon" class="image image--contain 1bit:image-dither 2bit:image-dither" src="{{ icon_base_url }}/microscope.png" alt="" hidden />
         </div>
         <div class="comparator-name" id="comparator-name">--</div>
         <div class="comparator-blurb" id="comparator-blurb">--</div>
         <div class="comparator-size" id="comparator-size">--</div>
       </div>
       <div class="progress-container">
-        <div class="progress-bar bg--white">
-          <div class="progress-fill" id="progress-fill">
-            <div class="progress-tone bg--gray-55"></div>
-            <div class="progress-tone bg--gray-30"></div>
-            <div class="progress-tone bg--black"></div>
-          </div>
-        </div>
+        <progress id="progress-fill" max="100" value="0"></progress>
         <div class="progress-text" id="progress-text">--%</div>
       </div>
     </div>
   </div>
 {% endtemplate %}
+
+<style>
+.bump-compare-shell {
+  --v-gap: 0.25rem;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  gap: 0.25rem;
+}
+
+.title_bar {
+  width: 97%;
+  display: grid;
+  place-items: center;
+}
+
+.title_bar .title {
+  font: 900 0.92rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.bump-compare {
+  width: 97%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: space-between;
+  align-items: center;
+  gap: var(--v-gap);
+}
+
+.week-display {
+  display: grid;
+  gap: var(--v-gap);
+  justify-items: center;
+  width: 100%;
+}
+
+.week-display::before {
+  content: "";
+  display: block;
+  height: 0.18rem;
+}
+
+.week-number {
+  font: italic 700 2.2rem/1 "Times New Roman", serif;
+}
+
+.trimester-display {
+  font: 900 0.98rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.comparator {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  align-items: center;
+  justify-items: center;
+  gap: var(--v-gap);
+  min-height: 0;
+}
+
+.icon-container {
+  display: grid;
+  place-items: center;
+  width: 170px;
+  height: 170px;
+  overflow: hidden;
+}
+
+.icon-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.comparator-name {
+  font: 900 1.35rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.comparator-blurb {
+  font: italic 400 0.95rem/1.2 "Times New Roman", serif;
+  max-width: 95%;
+}
+
+.comparator-size {
+  font: 400 0.9rem/1 "Courier New", monospace;
+  color: #444;
+}
+
+.progress-container {
+  width: 100%;
+  display: grid;
+  gap: var(--v-gap);
+  align-items: center;
+}
+
+.progress-container progress {
+  width: 100%;
+  height: 18px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #000;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 2px 2px 0px #888;
+}
+
+.progress-container progress::-webkit-progress-bar {
+  background: #fff;
+}
+
+.progress-container progress::-webkit-progress-value {
+  background: linear-gradient(
+    to bottom,
+    #8c8c8c 0%,
+    #8c8c8c 33%,
+    #4d4d4d 33%,
+    #4d4d4d 66%,
+    #000 66%,
+    #000 100%
+  );
+}
+
+.progress-container progress::-moz-progress-bar {
+  background: linear-gradient(
+    to bottom,
+    #8c8c8c 0%,
+    #8c8c8c 33%,
+    #4d4d4d 33%,
+    #4d4d4d 66%,
+    #000 66%,
+    #000 100%
+  );
+}
+
+.progress-text {
+  font: 400 0.8rem/1 "Courier New", monospace;
+  color: #444;
+  justify-self: center;
+}
+
+/* Half horizontal and half vertical shared compact base */
+.bump-compare-shell--compact .title_bar .title {
+  font: 900 0.8rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.bump-compare-shell--compact {
+  --v-gap: 0.18rem;
+}
+
+.bump-compare-shell--compact .bump-compare {
+  grid-template-rows: auto 1fr auto;
+  align-content: stretch;
+}
+
+.bump-compare-shell--compact .week-number {
+  font: italic 700 1.55rem/1 "Times New Roman", serif;
+}
+
+.bump-compare-shell--compact .trimester-display {
+  font: 900 0.75rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.bump-compare-shell--compact .icon-container {
+  width: 96px;
+  height: 96px;
+}
+
+.bump-compare-shell--compact .comparator-name {
+  font: 900 1rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--compact .comparator-blurb {
+  font: italic 400 0.72rem/1.2 "Times New Roman", serif;
+}
+
+.bump-compare-shell--compact .comparator-size {
+  font: 400 0.75rem/1 "Courier New", monospace;
+}
+
+.bump-compare-shell--compact .progress-container progress {
+  height: 12px;
+}
+
+.bump-compare-shell--compact .progress-text {
+  font: 400 0.7rem/1 "Courier New", monospace;
+}
+
+/* Half vertical specific tweaks */
+.bump-compare-shell--half-vertical .title_bar .title {
+  font: 900 0.85rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--half-vertical .week-number {
+  font: italic 700 1.85rem/1 "Times New Roman", serif;
+}
+
+.bump-compare-shell--half-vertical .trimester-display {
+  font: 900 0.875rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--half-vertical .icon-container {
+  width: 118px;
+  height: 118px;
+}
+
+.bump-compare-shell--half-vertical .comparator-name {
+  font: 900 1.1rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--half-vertical .comparator-blurb {
+  font: italic 400 0.78rem/1.2 "Times New Roman", serif;
+}
+
+.bump-compare-shell--half-vertical .comparator-size {
+  font: 400 0.8rem/1 "Courier New", monospace;
+}
+
+.bump-compare-shell--half-vertical .progress-text {
+  font: 400 0.72rem/1 "Courier New", monospace;
+}
+
+/* Quadrant */
+.bump-compare-shell--quadrant .title_bar .title {
+  font: 900 0.65rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--quadrant {
+  --v-gap: 0.12rem;
+}
+
+.bump-compare-shell--quadrant .week-number {
+  font: italic 700 1.15rem/1 "Times New Roman", serif;
+}
+
+.bump-compare-shell--quadrant .trimester-display {
+  font: 900 0.625rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--quadrant .icon-container {
+  width: 64px;
+  height: 64px;
+}
+
+.bump-compare-shell--quadrant .comparator-name {
+  font: 600 0.875rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--quadrant .comparator-blurb {
+  font: italic 400 0.56rem/1.15 "Times New Roman", serif;
+  max-width: 97%;
+}
+
+.bump-compare-shell--quadrant .comparator-size {
+  font: 400 0.625rem/1 "Courier New", monospace;
+}
+
+.bump-compare-shell--quadrant .progress-container progress {
+  height: 8px;
+  border-width: 1px;
+}
+
+.bump-compare-shell--quadrant .progress-text {
+  font: 400 0.58rem/1 "Courier New", monospace;
+}
+</style>
 
 <script>
 (function() {
@@ -169,7 +440,7 @@
 
     // Update progress bar
     const progressPercent = Math.max(0, Math.min(100, ((280 - daysToDue) / 280) * 100));
-    document.getElementById('progress-fill').style.width = progressPercent + '%';
+    document.getElementById('progress-fill').value = progressPercent;
     document.getElementById('progress-text').textContent = "You're " + Math.round(progressPercent) + "% of the way along!";
 
     // Display comparator name
@@ -216,7 +487,7 @@
     if (comparator.icon) {
       iconEl.src = '{{ icon_base_url }}/' + comparator.icon;
       iconEl.alt = name;
-      iconEl.style.display = 'block';
+      iconEl.removeAttribute('hidden');
     }
   }
 

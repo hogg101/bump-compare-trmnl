@@ -35,6 +35,7 @@ Asset provenance:
 Use TRMNL's custom form builder to create these fields:
 
 - **due_date** (text): Optional, format `YYYY-MM-DD` (e.g., `2024-09-15`)
+- **author_bio** (author bio): Required by TRMNL for end-user support contact in published plugins
 - **locale** (select): `en-GB` (UK English) or `en-US` (US English). Default: `en-GB`
 - **units** (select): `metric` or `imperial`. Default: `metric` (auto-set from locale if not specified)
 
