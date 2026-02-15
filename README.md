@@ -1,4 +1,4 @@
-# Project Brief — “Bump Compare” (TRMNL v2 plugin)
+# Bump Compare
 
 ## Summary
 

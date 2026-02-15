@@ -1,9 +1,9 @@
-# Repository Guidelines
+# Contributor Guide
 
 ## Project Structure & Module Organization
 - Liquid templates live at the repo root: `full.liquid`, `half_horizontal.liquid`, `half_vertical.liquid`, `quadrant.liquid`.
 - Shared TRMNL markup lives in `shared_markup.liquid` and should be pasted into the plugin's Shared Markup field.
-- Viewport files should stay focused on layout-specific CSS and call shared markup via `{% render bump_compare_markup %}`.
+- Viewport files should stay focused on layout-specific CSS and call shared markup via `{% render "bump_compare_markup" %}`.
 - Configuration lives in `settings.yml` and `custom_fields.yml`.
 - Icon assets belong in `images/` and are referenced by filename in the weeks data.
 - Week-by-week comparator list and filenames live in `weeks.md`.
@@ -20,7 +20,7 @@
 ## Build, Test, and Development Commands
 There is no automated build or test pipeline. Typical workflow:
 - Edit shared logic/data in `shared_markup.liquid`; edit viewport-specific styling in viewport files.
-- Paste `shared_markup.liquid` into TRMNL Shared Markup, then upload each viewport file in its viewport section.
+- Paste `shared_markup.liquid` into TRMNL Shared Markup, then paste each viewport file into its matching viewport section.
 - Update `custom_fields.yml` and `settings.yml` in TRMNL when fields change.
 - Verify output using TRMNL’s preview for full/half/quadrant layouts.
 
@@ -36,7 +36,7 @@ There is no automated build or test pipeline. Typical workflow:
 - Confirm external icon URLs resolve from `icon_base_url`.
 
 ## Commit & Pull Request Guidelines
-- Commit messages are short, imperative, sentence case (e.g., `Revamp templates and docs for PNG icon hosting`).
+- Commit messages should be short, imperative, and sentence case (e.g., `Refactor plugin to shared TRMNL markup`).
 - Use a second paragraph for details when the change is large or multi-file.
 - PRs should include a clear description, list of affected templates, and screenshots of TRMNL previews for all viewport sizes.
 - Link related issues if they exist.

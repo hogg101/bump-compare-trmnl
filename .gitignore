@@ -1,30 +1,12 @@
-# Icons and assets (may be large)
-icons/
-assets/
-*.png
-*.jpg
-*.jpeg
-*.gif
-!images/
-!images/*.png
-!images/*.jpg
-!images/*.jpeg
-!images/*.gif
-
-# Node modules (if we add build tools later)
-node_modules/
-
-# Build outputs
-dist/
-build/
-
-# OS files
+# macOS / Windows metadata
 .DS_Store
 Thumbs.db
 
-# Editor files
-.vscode/
-.idea/
+# Local Python virtual environments
+.venv/
+venv/
+
+# Editor swap/temp files
 *.swp
 *.swo
 *~
