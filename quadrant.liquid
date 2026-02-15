@@ -105,6 +105,14 @@
   const locale = container.dataset.locale || 'en-GB';
   const units = container.dataset.units || 'metric';
   const weeksData = JSON.parse(container.dataset.weeks || '[]');
+  const us_name_aliases = {
+    'Aubergine': 'Eggplant',
+    'Courgette': 'Zucchini',
+    'Marrow': 'Summer squash',
+    'Swede': 'Rutabaga',
+    'Cantaloupe melon': 'Cantaloupe',
+    'Zuccini': 'Zucchini'
+  };
   
   if (!dueDateStr) {
     document.getElementById('current-week').textContent = '?';
@@ -158,7 +166,11 @@
   document.getElementById('progress-fill').style.width = progressPercent + '%';
   document.getElementById('progress-text').textContent = "You're " + Math.round(progressPercent) + "% of the way along!";
   
-  const name = comparator.name[locale] || comparator.name['en-GB'];
+  const localized_name = comparator.name[locale] || comparator.name['en-GB'] || '';
+  const gb_name = comparator.name['en-GB'] || '';
+  const name = locale === 'en-US'
+    ? (us_name_aliases[localized_name] || us_name_aliases[gb_name] || localized_name)
+    : localized_name;
   document.getElementById('comparator-name').textContent = name;
   const blurb = comparator.blurb && (comparator.blurb[locale] || comparator.blurb['en-GB']) || '';
   document.getElementById('comparator-blurb').textContent = blurb;
@@ -176,7 +188,11 @@
     }
     lengthStr = lengthIn + 'in';
   } else {
-    lengthStr = comparator.length_mm + ' mm';
+    if (comparator.length_mm > 100) {
+      lengthStr = (comparator.length_mm / 10).toFixed(1) + ' cm';
+    } else {
+      lengthStr = comparator.length_mm + ' mm';
+    }
     if (comparator.weight_g >= 1000) {
       weightStr = (comparator.weight_g / 1000).toFixed(1) + ' kg';
     } else {

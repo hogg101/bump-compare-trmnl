@@ -8,7 +8,7 @@
 - keyname: locale
   field_type: select
   name: Locale
-  description: Language and regional settings
+  description: Needed to show familiar comparator names (e.g., courgette vs zucchini) and set default units
   options:
     - UK English: en-GB
     - US English: en-US

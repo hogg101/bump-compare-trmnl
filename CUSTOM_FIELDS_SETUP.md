@@ -21,6 +21,10 @@ After creating the fields:
 3. **Fill in a test value** (e.g., set `due_date` to a future date)
 4. **Check the plugin preview** - it should display the calculated week
 
+### Why Locale Is Required
+
+Set `locale` so users see the naming they expect (for example, `courgette` in `en-GB` vs `zucchini` in `en-US`) and get the right default measurement units.
+
 ## Troubleshooting
 
 If custom fields still don't work:
