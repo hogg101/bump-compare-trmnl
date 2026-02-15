@@ -160,17 +160,35 @@
   min-height: 0;
 }
 
+.bump-compare-shell--full .comparator {
+  gap: 0.4rem;
+}
+
+.bump-compare-shell--full .icon-container {
+  margin-bottom: 0.22rem;
+}
+
+.bump-compare-shell--full .icon-container img {
+  width: 94%;
+  height: 94%;
+}
+
 .icon-container {
   display: grid;
   place-items: center;
   width: 170px;
   height: 170px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .icon-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .comparator-name {
@@ -290,6 +308,70 @@
   font: 400 0.7rem/1 "Courier New", monospace;
 }
 
+/* Half horizontal specific tweaks */
+.bump-compare-shell--half-horizontal {
+  --v-gap: 0.12rem;
+}
+
+.bump-compare-shell--half-horizontal .week-display::before {
+  height: 0;
+}
+
+.bump-compare-shell--half-horizontal .week-number {
+  font: italic 700 1.35rem/1 "Times New Roman", serif;
+}
+
+.bump-compare-shell--half-horizontal .trimester-display {
+  font: 900 0.68rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--half-horizontal .comparator {
+  gap: 0.08rem;
+}
+
+.bump-compare-shell--half-horizontal .icon-container {
+  width: 82px;
+  height: 82px;
+  overflow: hidden;
+}
+
+.bump-compare-shell--half-horizontal .icon-container img {
+  width: 92%;
+  height: 92%;
+}
+
+.bump-compare-shell--half-horizontal .comparator-name {
+  font: 900 0.9rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+}
+
+.bump-compare-shell--half-horizontal .comparator-blurb {
+  font: italic 400 0.64rem/1.1 "Times New Roman", serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 92%;
+}
+
+.bump-compare-shell--half-horizontal .comparator-size {
+  font: 400 0.66rem/1 "Courier New", monospace;
+  white-space: nowrap;
+}
+
+.bump-compare-shell--half-horizontal .progress-container {
+  gap: 0.12rem;
+  align-self: end;
+  padding-bottom: 0.12rem;
+}
+
+.bump-compare-shell--half-horizontal .progress-container progress {
+  height: 9px;
+}
+
+.bump-compare-shell--half-horizontal .progress-text {
+  font: 400 0.58rem/1.1 "Courier New", monospace;
+  margin-top: 0.06rem;
+}
+
 /* Half vertical specific tweaks */
 .bump-compare-shell--half-vertical .title_bar .title {
   font: 900 0.85rem/1 "Arial Black", "Helvetica Neue", sans-serif;
@@ -303,9 +385,20 @@
   font: 900 0.875rem/1 "Arial Black", "Helvetica Neue", sans-serif;
 }
 
+.bump-compare-shell--half-vertical .comparator {
+  gap: 0.14rem;
+}
+
 .bump-compare-shell--half-vertical .icon-container {
-  width: 118px;
-  height: 118px;
+  width: 112px;
+  height: 112px;
+  margin-bottom: 0.18rem;
+  overflow: hidden;
+}
+
+.bump-compare-shell--half-vertical .icon-container img {
+  width: 94%;
+  height: 94%;
 }
 
 .bump-compare-shell--half-vertical .comparator-name {
@@ -333,6 +426,11 @@
   --v-gap: 0.12rem;
 }
 
+.bump-compare-shell--quadrant .bump-compare {
+  grid-template-rows: auto 1fr auto;
+  align-content: stretch;
+}
+
 .bump-compare-shell--quadrant .week-number {
   font: italic 700 1.15rem/1 "Times New Roman", serif;
 }
@@ -341,31 +439,48 @@
   font: 900 0.625rem/1 "Arial Black", "Helvetica Neue", sans-serif;
 }
 
+.bump-compare-shell--quadrant .comparator {
+  gap: 0.06rem;
+}
+
 .bump-compare-shell--quadrant .icon-container {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.08rem;
+  overflow: hidden;
+}
+
+.bump-compare-shell--quadrant .icon-container img {
+  width: 92%;
+  height: 92%;
 }
 
 .bump-compare-shell--quadrant .comparator-name {
-  font: 600 0.875rem/1 "Arial Black", "Helvetica Neue", sans-serif;
+  font: 600 0.82rem/1 "Arial Black", "Helvetica Neue", sans-serif;
 }
 
 .bump-compare-shell--quadrant .comparator-blurb {
-  font: italic 400 0.56rem/1.15 "Times New Roman", serif;
+  font: italic 400 0.52rem/1.1 "Times New Roman", serif;
   max-width: 97%;
 }
 
 .bump-compare-shell--quadrant .comparator-size {
-  font: 400 0.625rem/1 "Courier New", monospace;
+  font: 400 0.58rem/1 "Courier New", monospace;
+}
+
+.bump-compare-shell--quadrant .progress-container {
+  gap: 0.14rem;
+  padding-bottom: 0.16rem;
 }
 
 .bump-compare-shell--quadrant .progress-container progress {
-  height: 8px;
+  height: 7px;
   border-width: 1px;
 }
 
 .bump-compare-shell--quadrant .progress-text {
-  font: 400 0.58rem/1 "Courier New", monospace;
+  font: 400 0.5rem/1.1 "Courier New", monospace;
+  margin-top: 0.08rem;
 }
 </style>
 
