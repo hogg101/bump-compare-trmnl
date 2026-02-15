@@ -4,6 +4,22 @@
 
 This is a TRMNL v2 plugin that displays the current gestational week and compares it to fruit/vegetable sizes.
 
+## Licensing and Publisher Commitments
+
+This plugin's visual design, markup, and data parsing logic are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+
+- License: `CC BY 4.0`
+- Full text: <https://creativecommons.org/licenses/by/4.0/>
+- Repository license file: `LICENSE`
+
+Support and maintenance commitments:
+- End users can contact the creator by opening an issue in this repository.
+- Maintenance is provided on a best-effort basis, including support for active connections with refresh intervals as low as 5 minutes.
+
+Asset provenance:
+- All plugin icons in `images/` and `images_clean/` are original assets created by the maintainer using ChatGPT image generation workflows.
+- No third-party stock/icon packs are included in this repository.
+
 ## Installation
 
 1. **Create a Private Plugin** in your TRMNL dashboard
