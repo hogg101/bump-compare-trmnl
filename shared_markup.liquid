@@ -4,7 +4,7 @@
 {% endcomment %}
 
 {% comment %} Icon base URL {% endcomment %}
-{% assign icon_base_url = "https://raw.githubusercontent.com/hogg101/bump-compare-trmnl/main/images" %}
+{% assign icon_base_url = "https://raw.githubusercontent.com/hogg101/bump-compare-trmnl/main/images_clean" %}
 
 {% comment %} Load weeks data {% endcomment %}
 {% assign weeks_data = '[
@@ -78,7 +78,7 @@
       </div>
       <div class="comparator">
         <div class="icon-container">
-          <img id="comparator-icon" src="" alt="" style="display: none;" />
+          <img id="comparator-icon" class="image image--contain 1bit:image-dither 2bit:image-dither" src="" alt="" style="display: none;" />
         </div>
         <div class="comparator-name" id="comparator-name">--</div>
         <div class="comparator-blurb" id="comparator-blurb">--</div>
