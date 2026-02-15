@@ -9,6 +9,7 @@ This is a TRMNL v2 Private Plugin that displays the current gestational week and
 1. **Create a Private Plugin** in your TRMNL dashboard
 2. **Import the plugin files**:
    - Upload `settings.yml` (or create plugin and upload files via ZIP import)
+   - Paste `shared_markup.liquid` into the plugin's **Shared Markup** field
    - Upload `full.liquid`, `half_horizontal.liquid`, `half_vertical.liquid`, `quadrant.liquid` to their respective viewport sections
    - Set up custom fields by pasting YAML from `custom_fields.yml` into the custom fields editor
    - Icons are hosted as PNGs on GitHub (no uploads to TRMNL)
@@ -50,7 +51,7 @@ PNG icons should be exported with a simple silhouette and high contrast for best
 
 Once icons are created, host them in the repo and reference them from Liquid:
 - Store PNGs in the `images/` directory
-- Set `icon_base_url` in each Liquid template to your GitHub raw URL
+- Set `icon_base_url` in `shared_markup.liquid` to your GitHub raw URL
 - Icons load via `icon_base_url` + filename at runtime
 
 **Example workflow:**
@@ -83,7 +84,7 @@ To add or replace icons:
 1. Create the icon as a PNG file
 2. Add the PNG to the `images/` directory in the repo
 3. Update the weeks data to reference the new icon filename
-4. Confirm the `icon_base_url` is correct in each Liquid template
+4. Confirm the `icon_base_url` is correct in `shared_markup.liquid`
 
 ## Interpolation
 

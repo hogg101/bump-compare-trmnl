@@ -16,5 +16,5 @@
     - Improve sizing and spacing and layout - i think the progress bar should be the lowest item for example
     - Can the progress bar have a pixellated effect and maybe some greyscale?
 - [ ] Add a title to the plugin that says "Bump Compare"
-- [ ] Fix the UK/US Metric/Imperial switching functionality
-- [ ] Add a new shared.liquid file that contains the shared code for the plugin as per the TRMNL docs.
+- [x] Fix the UK/US Metric/Imperial switching functionality
+- [x] Add a shared markup file (`shared_markup.liquid`) that centralizes shared code for all viewports.

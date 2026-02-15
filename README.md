@@ -32,3 +32,4 @@ Technical specifics live in `AGENTS.md`, including:
 * `PLUGIN_SETUP.md`
 * `CUSTOM_FIELDS_SETUP.md`
 * `weeks.md`
+* `shared_markup.liquid`
