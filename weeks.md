@@ -20,7 +20,7 @@ Week 3
 Image: microscope.png
 Name (en-GB): Very early stage
 Name (en-US): Very early stage
-Text: Microscopic and mighty, with big plans.
+Text: Microscopic but mighty.
 
 Week 4
 Image: poppyseed.png

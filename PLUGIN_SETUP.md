@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a TRMNL v2 Private Plugin that displays the current gestational week and compares it to fruit/vegetable sizes.
+This is a TRMNL v2 plugin that displays the current gestational week and compares it to fruit/vegetable sizes.
 
 ## Installation
 
@@ -57,10 +57,10 @@ Once icons are created, host them in the repo and reference them from Liquid:
 **Example workflow:**
 1. Create `poppy.png` file
 2. Add it to the `images/` directory in the repo
-3. Update `icon_base_url` in each Liquid template
+3. Update `icon_base_url` in `shared_markup.liquid`
 4. Reference `poppy.png` in the weeks data
 
-See `ASSET_STRATEGY.md` for details.
+See `weeks.md` for comparator/icon mapping details.
 
 ## How It Works
 

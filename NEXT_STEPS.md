@@ -12,9 +12,9 @@
     - Third trimester: Weeks 29-40
 - [x] Improve the UI, design and font choice:
     - Use an "eclectic type" font in a couple or more sub variations for the sections
-    - Utilise the 4 grey capability of the trmnl e ink display
-    - Improve sizing and spacing and layout - i think the progress bar should be the lowest item for example
-    - Can the progress bar have a pixellated effect and maybe some greyscale?
+    - Review TRMNL documentation for 4-grey rendering guidance and apply it to the design
+    - Improve sizing, spacing, and overall layout
+    - Added a pixelated greyscale effect to the progress bar
 - [ ] Add a title to the plugin that says "Bump Compare"
 - [x] Fix the UK/US Metric/Imperial switching functionality
 - [x] Add a shared markup file (`shared_markup.liquid`) that centralizes shared code for all viewports.
