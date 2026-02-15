@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Remove near-white background connected to image borders.
+# Remove near-white background connected to image borders, then trim empty edges.
 # This avoids removing internal highlights that are not edge-connected.
 
 INPUT_DIR="${1:-images}"
 OUTPUT_DIR="${2:-images_clean}"
 FUZZ="${3:-6%}"
+TRIM_FUZZ="${4:-1%}"
 
 if ! command -v magick >/dev/null 2>&1; then
   echo "ImageMagick 'magick' not found in PATH." >&2
@@ -39,6 +40,8 @@ for file in "${files[@]}"; do
     -floodfill +0-1 white \
     -floodfill -1+0 white \
     -floodfill -1-1 white \
+    -fuzz "$TRIM_FUZZ" \
+    -trim +repage \
     "$out"
 
   echo "cleaned: $base"
