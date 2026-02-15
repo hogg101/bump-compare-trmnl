@@ -62,15 +62,9 @@
     {% assign units = "metric" %}
   {% endif %}
 {% endif %}
-{% assign month_anchor_day = custom_fields.month_anchor_day | default: 15 | plus: 0 %}
 
 {% comment %} Resolve due date {% endcomment %}
-{% assign due_date_str = null %}
-{% if custom_fields.due_date != blank %}
-  {% assign due_date_str = custom_fields.due_date %}
-{% elsif custom_fields.due_month != blank %}
-  {% assign due_date_str = custom_fields.due_month | append: "-" | append: month_anchor_day %}
-{% endif %}
+{% assign due_date_str = custom_fields.due_date %}
 
 <div class="bump-compare-shell bump-compare-shell--compact">
   <div class="title_bar">

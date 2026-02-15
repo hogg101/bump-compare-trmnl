@@ -1,23 +1,8 @@
-- keyname: due_month
-  field_type: string
-  name: Due Month
-  description: Optional approximate due month
-  placeholder: YYYY-MM
-  optional: true
-
 - keyname: due_date
   field_type: string
   name: Due Date
-  description: Optional exact due date overrides due month if set
+  description: Estimated due date
   placeholder: YYYY-MM-DD
-  optional: true
-
-- keyname: month_anchor_day
-  field_type: number
-  name: Month Anchor Day
-  description: Day of month to use when only due_month is set
-  placeholder: '15'
-  default: 15
   optional: true
 
 - keyname: locale
@@ -39,4 +24,3 @@
     - Imperial: imperial
   default: metric
   optional: true
-

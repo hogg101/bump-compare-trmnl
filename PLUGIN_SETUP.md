@@ -17,9 +17,7 @@ This is a TRMNL v2 Private Plugin that displays the current gestational week and
 
 Use TRMNL's custom form builder to create these fields:
 
-- **due_month** (text): Optional, format `YYYY-MM` (e.g., `2024-09`)
-- **due_date** (text): Optional, format `YYYY-MM-DD` (e.g., `2024-09-15`). Overrides `due_month` if set
-- **month_anchor_day** (number): Default `15`. Used when only `due_month` is provided
+- **due_date** (text): Optional, format `YYYY-MM-DD` (e.g., `2024-09-15`)
 - **locale** (select): `en-GB` (UK English) or `en-US` (US English). Default: `en-GB`
 - **units** (select): `metric` or `imperial`. Default: `metric` (auto-set from locale if not specified)
 

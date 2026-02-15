@@ -7,7 +7,7 @@
 - Week-by-week comparator list and filenames live in `weeks.md`.
 
 ## Implementation Notes
-- Custom fields: `due_month` (`YYYY-MM`), `due_date` (`YYYY-MM-DD`), `month_anchor_day` (default `15`), `locale` (`en-GB` | `en-US`), `units` (`metric` | `imperial`, auto from locale).
+- Custom fields: `due_date` (`YYYY-MM-DD`), `locale` (`en-GB` | `en-US`), `units` (`metric` | `imperial`, auto from locale).
 - Weeks data is embedded JSON inside each template. Provide explicit values for weeks 0–40; weeks 0–3 share the earliest icon. Localise `name` and convert units at render time.
 - Week calculation: `week = clamp(floor((280 - days_to_due) / 7), 0, 40)`.
 - Icon hosting uses GitHub raw URLs. Set `icon_base_url` per template, then build `iconEl.src` from the base + filename.

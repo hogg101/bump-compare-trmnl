@@ -2,7 +2,7 @@
 
 ## Summary
 
-A single-purpose TRMNL v2 plugin that shows the current gestational week and a lo-fi 1-bit fruit/veg comparator. Users set an approximate due date (month or exact date). The plugin calculates the current week automatically and updates each refresh. Icons are hosted on GitHub.
+A single-purpose TRMNL v2 plugin that shows the current gestational week and a lo-fi 1-bit fruit/veg comparator. Users set an approximate due date. The plugin calculates the current week automatically and updates each refresh. Icons are hosted on GitHub.
 
 ## Objectives
 
