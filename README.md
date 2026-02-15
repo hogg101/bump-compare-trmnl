@@ -54,3 +54,14 @@ Maintenance policy:
 
 All plugin icons in `images/` and `images_clean/` are original assets created by the repository maintainer using ChatGPT image generation workflows.
 No third-party stock/icon packs are included in this repository.
+
+## Chef Publishing Notes
+
+These checks were required to pass TRMNL Chef validation for marketplace publishing:
+
+- `author_bio` must exist in `custom_fields.yml` with at least `keyname`, `field_type`, and `name`.
+- `author_bio.category` must use approved TRMNL category values. This plugin uses `life,personal`.
+- Keep a valid static `<img src>` in markup. Avoid empty `src=""` placeholders.
+- Avoid inline style usage (`style="..."`) and JS style mutation (`element.style.*`).
+- Keep layout CSS in the shared stylesheet in `shared_markup.liquid`; viewport files should only set shell/viewport modifiers and render shared markup.
+- Use TRMNL native-compatible patterns where possible (for example `<progress>` + `.value` in JS for progress updates).

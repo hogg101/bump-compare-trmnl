@@ -3,13 +3,15 @@
 ## Project Structure & Module Organization
 - Liquid templates live at the repo root: `full.liquid`, `half_horizontal.liquid`, `half_vertical.liquid`, `quadrant.liquid`.
 - Shared TRMNL markup lives in `shared_markup.liquid` and should be pasted into the plugin's Shared Markup field.
-- Viewport files should stay focused on layout-specific CSS and call shared markup via `{% render "bump_compare_markup" %}`.
+- Viewport files should remain render-only: set shell/viewport modifiers and call shared markup via `{% render "bump_compare_markup" %}`.
+- Shared CSS/JS should live in `shared_markup.liquid` to keep viewports minimal and Chef-friendly.
 - Configuration lives in `settings.yml` and `custom_fields.yml`.
 - Icon assets belong in `images/` and are referenced by filename in the weeks data.
 - Week-by-week comparator list and filenames live in `weeks.md`.
 
 ## Implementation Notes
-- Custom fields: `due_date` (`YYYY-MM-DD`), `locale` (`en-GB` | `en-US`), `units` (`metric` | `imperial`, auto from locale).
+- Custom fields: `due_date` (`YYYY-MM-DD`), `author_bio`, `locale` (`en-GB` | `en-US`), `units` (`metric` | `imperial`, auto from locale).
+- `author_bio` must include required keys (`keyname`, `field_type`, `name`) and an approved `category` value for Chef marketplace validation.
 - Weeks data is embedded JSON in `shared_markup.liquid`. Provide explicit values for weeks 0–40; weeks 0–3 share the earliest icon. Localise `name` and convert units at render time.
 - Week calculation: `week = clamp(floor((280 - days_to_due) / 7), 0, 40)`.
 - Icon hosting uses GitHub raw URLs. Set `icon_base_url` in shared markup, then build `iconEl.src` from the base + filename.
@@ -28,7 +30,13 @@ There is no automated build or test pipeline. Typical workflow:
 - Indentation is 2 spaces in HTML/CSS/JS blocks inside Liquid templates.
 - Keep Liquid variables in `snake_case` (e.g., `due_date_str`, `weeks_data`).
 - Icon filenames should be lowercase with hyphens and `.png` extension (e.g., `poppy-seed.png`).
-- Keep shared HTML/JS/data in `shared_markup.liquid`; keep viewport files focused on per-viewport styling.
+- Keep shared HTML/CSS/JS/data in `shared_markup.liquid`; keep viewport files render-only.
+
+## Chef Guardrails
+- Avoid empty static image sources (do not ship `<img src="">`).
+- Avoid inline style attributes and JS style mutation (`element.style.*`); prefer class/state updates and element attributes.
+- Keep progress updates via semantic elements (for example `<progress>` with `value`) rather than style width mutation.
+- If a publish check fails, validate the latest pasted code in TRMNL matches repo files before further edits.
 
 ## Testing Guidelines
 - No automated tests are set up.

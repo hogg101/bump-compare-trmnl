@@ -39,6 +39,13 @@ Use TRMNL's custom form builder to create these fields:
 - **locale** (select): `en-GB` (UK English) or `en-US` (US English). Default: `en-GB`
 - **units** (select): `metric` or `imperial`. Default: `metric` (auto-set from locale if not specified)
 
+### Author Bio Notes (Chef)
+
+For marketplace publishing, Chef validates `author_bio` strictly:
+- Include required keys: `keyname`, `field_type`, `name`
+- Include `category` with approved values (this plugin uses `life,personal`)
+- Add at least one contact/support URL field (`github_url`, `email_address`, optional `learn_more_url`)
+
 ## Icon Assets
 
 Icons are hosted as PNG files in the GitHub repo and loaded at runtime. This means:
@@ -114,3 +121,10 @@ For weeks between anchor points (e.g., week 5, 6, 7 between poppy seed at week 4
 - Test unit conversion (metric vs imperial)
 - Verify icons display correctly on e-ink preview
 - Test with missing due date (should show helpful message)
+
+## Chef Validation Checklist
+
+- No empty static image URLs in markup (`src=""` fails validation)
+- Avoid inline style attributes and JS style mutations
+- Keep shared CSS/JS in `shared_markup.liquid`
+- Keep viewport files render-only (modifier assignment + `{% render "bump_compare_markup" %}`)

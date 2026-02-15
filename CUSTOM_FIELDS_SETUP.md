@@ -34,6 +34,13 @@ If custom fields still don't work:
 3. **Check TRMNL's JS Logs** - in the Markup Editor, expand "JS Logs" to see if there are any errors
 4. **Enable Debug Logs** - from plugin settings, enable debug logs to see server-side errors
 
+### Chef-specific `author_bio` validation
+
+If Chef rejects `author_bio`, check:
+1. It includes required keys: `keyname`, `field_type`, `name`
+2. `category` is present and uses approved values
+3. Contact/support metadata is present (for example `github_url` and `email_address`)
+
 ## Access Pattern in Liquid
 
 The markup accesses custom fields via `trmnl.plugin_settings.custom_fields_values`:
