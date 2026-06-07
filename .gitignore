@@ -6,6 +6,15 @@ Thumbs.db
 .venv/
 venv/
 
+# Local TRMNL preview runtime and build output
+.trmnl-dev/
+_build/
+
+# Temporary generated assets
+tmp/
+output/
+images_generated/
+
 # Editor swap/temp files
 *.swp
 *.swo

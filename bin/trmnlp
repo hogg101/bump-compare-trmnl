@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+RUBY_BIN="$ROOT/.trmnl-dev/ruby/bin/ruby"
+TRMNLP_BIN="$ROOT/.trmnl-dev/gems/bin/trmnlp"
+
+if [[ ! -x "$RUBY_BIN" || ! -x "$TRMNLP_BIN" ]]; then
+  echo "Local TRMNLP runtime is missing. Run scripts/install_trmnlp.sh first." >&2
+  exit 1
+fi
+
+export GEM_HOME="$ROOT/.trmnl-dev/gems"
+export GEM_PATH="$GEM_HOME"
+export PATH="$ROOT/.trmnl-dev/gems/bin:$ROOT/.trmnl-dev/ruby/bin:$PATH"
+
+exec "$TRMNLP_BIN" "$@"

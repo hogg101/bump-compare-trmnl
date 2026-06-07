@@ -1,0 +1,22 @@
+# TRMNLP local preview configuration.
+---
+watch:
+  - .trmnlp.yml
+  - src
+  - full.liquid
+  - half_horizontal.liquid
+  - half_vertical.liquid
+  - quadrant.liquid
+  - shared_markup.liquid
+  - settings.yml
+
+custom_fields:
+  due_date: "2026-10-01"
+  locale: en-GB
+  units: metric
+
+variables:
+  trmnl:
+    plugin_settings:
+      instance_name: Bump Compare
+      icon_base_url: http://127.0.0.1:8765/images_clean

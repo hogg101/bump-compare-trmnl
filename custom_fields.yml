@@ -7,9 +7,9 @@
 
 - keyname: author_bio
   field_type: author_bio
-  name: About the Creator
+  name: About This Plugin
   category: life,personal
-  description: London-based systems integrator and CTO at Twisted Pear, focused on networking, WiFi, surveillance, and automation/control systems for lighting and AV.
+  description: "Pregnancy Bump Compare shows your current pregnancy week with a familiar fruit/veg size comparison, plus estimated baby length and weight. Enter your due date (YYYY-MM-DD), then optionally choose locale (UK/US naming) and units (metric/imperial). If units are not set, the plugin defaults from locale. This plugin is informational only and not medical advice."
   email_address: [email protected]
   github_url: https://github.com/hogg101/bump-compare-trmnl
   learn_more_url: https://www.jameshogg.tech

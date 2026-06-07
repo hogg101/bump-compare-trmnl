@@ -4,7 +4,7 @@
 {% endcomment %}
 
 {% comment %} Icon base URL {% endcomment %}
-{% assign icon_base_url = "https://raw.githubusercontent.com/hogg101/bump-compare-trmnl/main/images_clean" %}
+{% assign icon_base_url = trmnl.plugin_settings.icon_base_url | default: "https://raw.githubusercontent.com/hogg101/bump-compare-trmnl/main/images_clean" %}
 
 {% comment %} Load weeks data {% endcomment %}
 {% assign weeks_data = '[
@@ -67,420 +67,220 @@
 {% assign due_date_str = custom_fields.due_date | default: trmnl.plugin_settings.due_date | default: trmnl.plugin_settings.custom_fields.due_date %}
 
 {% template bump_compare_markup %}
-  <div class="bump-compare-shell{% if shell_modifier %} {{ shell_modifier }}{% endif %}">
-    <div class="title_bar">
-      <span class="title">Bump Compare</span>
-    </div>
-    <div class="bump-compare{% if viewport_modifier %} {{ viewport_modifier }}{% endif %}" data-due-date="{{ due_date_str }}" data-locale="{{ locale }}" data-units="{{ units }}" data-weeks='{{ weeks_data | json }}'>
-      <div class="week-display">
-        <div class="week-number">Week <span id="current-week">--</span></div>
-        <div class="trimester-display" id="trimester-display">--</div>
+  {% assign week_title_class = "title title--xlarge" %}
+  {% assign comparator_title_class = "title title--large" %}
+  {% assign trimester_class = "label" %}
+  {% assign size_class = "label" %}
+  {% assign progress_bar_class = "progress-bar progress-bar--base" %}
+  {% if shell_modifier contains "half-horizontal" %}
+    {% assign week_title_class = "title" %}
+    {% assign comparator_title_class = "title title--small" %}
+    {% assign trimester_class = "label label--small" %}
+    {% assign size_class = "value value--xxsmall" %}
+    {% assign progress_bar_class = "progress-bar progress-bar--xsmall" %}
+  {% elsif shell_modifier contains "half-vertical" %}
+    {% assign week_title_class = "title title--large" %}
+    {% assign comparator_title_class = "title" %}
+    {% assign trimester_class = "label label--small" %}
+    {% assign size_class = "value value--xxsmall" %}
+    {% assign progress_bar_class = "progress-bar progress-bar--small" %}
+  {% elsif shell_modifier contains "quadrant" %}
+    {% assign week_title_class = "title title--small" %}
+    {% assign comparator_title_class = "title title--small" %}
+    {% assign trimester_class = "label label--small" %}
+    {% assign size_class = "value value--xxsmall" %}
+    {% assign progress_bar_class = "progress-bar progress-bar--xsmall" %}
+  {% endif %}
+
+  <div class="layout layout--col layout--center bump-compare{% if shell_modifier %} {{ shell_modifier }}{% endif %}{% if viewport_modifier %} {{ viewport_modifier }}{% endif %}" data-due-date="{{ due_date_str }}" data-locale="{{ locale }}" data-units="{{ units }}" data-weeks='{{ weeks_data | json }}'>
+    <div class="bump-compare__body">
+      <div class="bump-compare__week">
+        <span class="{{ week_title_class }}">Week <span id="current-week">--</span></span>
+        <span class="{{ trimester_class }}" id="trimester-display">--</span>
       </div>
-      <div class="comparator">
-        <div class="icon-container">
+      <div class="bump-compare__comparator">
+        <div class="bump-compare__icon">
           <img id="comparator-icon" class="image image--contain 1bit:image-dither 2bit:image-dither" src="{{ icon_base_url }}/microscope.png" alt="" hidden />
         </div>
-        <div class="comparator-name" id="comparator-name">--</div>
-        <div class="comparator-blurb" id="comparator-blurb">--</div>
-        <div class="comparator-size" id="comparator-size">--</div>
+        <span class="{{ comparator_title_class }} bump-compare__name" id="comparator-name" data-clamp="1">--</span>
+        <span class="description bump-compare__blurb" id="comparator-blurb" data-clamp="2">--</span>
+        <span class="{{ size_class }} bump-compare__size" id="comparator-size" data-clamp="1">--</span>
       </div>
-      <div class="progress-container">
-        <progress id="progress-fill" max="100" value="0"></progress>
-        <div class="progress-text" id="progress-text">--%</div>
+      <div class="{{ progress_bar_class }} bump-progress">
+        <div class="content">
+          <span class="label label--small">Progress</span>
+          <span class="value value--xxsmall" id="progress-text">--%</span>
+        </div>
+        <div class="track">
+          <progress id="progress-fill" max="100" value="0" aria-label="Pregnancy progress"></progress>
+        </div>
       </div>
     </div>
+  </div>
+  <div class="title_bar">
+    <span class="title">Bump Compare</span>
+    <span class="instance" id="title-week">Week --</span>
   </div>
 {% endtemplate %}
 
 <style>
-.bump-compare-shell {
-  --v-gap: 0.25rem;
+.bump-compare {
+  --bump-gap: 0.5rem;
+  --bump-icon-size: 170px;
   display: grid;
-  grid-template-rows: auto 1fr;
-  align-items: start;
-  justify-items: center;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  gap: 0.25rem;
+  text-align: center;
 }
 
-.title_bar {
-  width: 97%;
+.bump-compare__body {
   display: grid;
-  place-items: center;
-}
-
-.title_bar .title {
-  font: 900 0.92rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.bump-compare {
-  width: 97%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto auto auto;
-  align-content: space-between;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--v-gap);
+  justify-items: center;
+  gap: var(--bump-gap);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
-.week-display {
+.bump-compare__week {
   display: grid;
-  gap: var(--v-gap);
   justify-items: center;
+  gap: 0.2rem;
   width: 100%;
 }
 
-.week-display::before {
-  content: "";
-  display: block;
-  height: 0.18rem;
-}
-
-.week-number {
-  font: italic 700 2.2rem/1 "Times New Roman", serif;
-}
-
-.trimester-display {
-  font: 900 0.98rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.comparator {
+.bump-compare__comparator {
   display: grid;
   grid-template-rows: auto auto auto auto;
   align-items: center;
   justify-items: center;
-  gap: var(--v-gap);
+  gap: 0.25rem;
   min-height: 0;
+  width: 100%;
 }
 
-.bump-compare-shell--full .comparator {
-  gap: 0.4rem;
-}
-
-.bump-compare-shell--full .icon-container {
-  margin-bottom: 0.22rem;
-}
-
-.bump-compare-shell--full .icon-container img {
-  width: 94%;
-  height: 94%;
-}
-
-.icon-container {
+.bump-compare__icon {
   display: grid;
   place-items: center;
-  width: 170px;
-  height: 170px;
+  width: var(--bump-icon-size);
+  height: var(--bump-icon-size);
   overflow: visible;
 }
 
-.icon-container img {
+.bump-compare__icon img.image {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: var(--bump-icon-size) !important;
+  height: var(--bump-icon-size) !important;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   object-position: center;
 }
 
-.comparator-name {
-  font: 900 1.35rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.comparator-blurb {
-  font: italic 400 0.95rem/1.2 "Times New Roman", serif;
+.bump-compare__name,
+.bump-compare__blurb,
+.bump-compare__size {
   max-width: 95%;
 }
 
-.comparator-size {
-  font: 400 0.9rem/1 "Courier New", monospace;
-  color: #444;
+.bump-compare__size {
+  white-space: nowrap;
 }
 
-.progress-container {
+.bump-progress {
   width: 100%;
-  display: grid;
-  gap: var(--v-gap);
-  align-items: center;
+  max-width: 430px;
 }
 
-.progress-container progress {
+.bump-progress .content {
   width: 100%;
-  height: 18px;
+}
+
+.bump-progress .track {
+  width: 100%;
+  overflow: hidden;
+}
+
+.bump-progress progress {
+  display: block;
+  width: 100%;
+  height: 100%;
   appearance: none;
   -webkit-appearance: none;
-  border: 2px solid #000;
-  background: #fff;
-  overflow: hidden;
-  box-shadow: 2px 2px 0px #888;
+  border: 0;
+  background: transparent;
 }
 
-.progress-container progress::-webkit-progress-bar {
-  background: #fff;
+.bump-progress progress::-webkit-progress-bar {
+  background: transparent;
 }
 
-.progress-container progress::-webkit-progress-value {
-  background: linear-gradient(
-    to bottom,
-    #8c8c8c 0%,
-    #8c8c8c 33%,
-    #4d4d4d 33%,
-    #4d4d4d 66%,
-    #000 66%,
-    #000 100%
-  );
+.bump-progress progress::-webkit-progress-value {
+  background: #000;
 }
 
-.progress-container progress::-moz-progress-bar {
-  background: linear-gradient(
-    to bottom,
-    #8c8c8c 0%,
-    #8c8c8c 33%,
-    #4d4d4d 33%,
-    #4d4d4d 66%,
-    #000 66%,
-    #000 100%
-  );
+.bump-progress progress::-moz-progress-bar {
+  background: #000;
 }
 
-.progress-text {
-  font: 400 0.8rem/1 "Courier New", monospace;
-  color: #444;
-  justify-self: center;
+.bump-compare-shell--full {
+  --bump-gap: 0.6rem;
+  --bump-icon-size: 180px;
+}
+
+.bump-compare-shell--full .bump-compare__comparator {
+  gap: 0.35rem;
 }
 
 /* Half horizontal and half vertical shared compact base */
-.bump-compare-shell--compact .title_bar .title {
-  font: 900 0.8rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-  letter-spacing: 0.05em;
-}
-
 .bump-compare-shell--compact {
-  --v-gap: 0.18rem;
+  --bump-gap: 0.3rem;
+  --bump-icon-size: 96px;
 }
 
-.bump-compare-shell--compact .bump-compare {
-  grid-template-rows: auto 1fr auto;
-  align-content: stretch;
-}
-
-.bump-compare-shell--compact .week-number {
-  font: italic 700 1.55rem/1 "Times New Roman", serif;
-}
-
-.bump-compare-shell--compact .trimester-display {
-  font: 900 0.75rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-  letter-spacing: 0.04em;
-}
-
-.bump-compare-shell--compact .icon-container {
-  width: 96px;
-  height: 96px;
-}
-
-.bump-compare-shell--compact .comparator-name {
-  font: 900 1rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--compact .comparator-blurb {
-  font: italic 400 0.72rem/1.2 "Times New Roman", serif;
-}
-
-.bump-compare-shell--compact .comparator-size {
-  font: 400 0.75rem/1 "Courier New", monospace;
-}
-
-.bump-compare-shell--compact .progress-container progress {
-  height: 12px;
-}
-
-.bump-compare-shell--compact .progress-text {
-  font: 400 0.7rem/1 "Courier New", monospace;
+.bump-compare-shell--compact .bump-progress .content {
+  display: none;
 }
 
 /* Half horizontal specific tweaks */
 .bump-compare-shell--half-horizontal {
-  --v-gap: 0.12rem;
+  --bump-gap: 0.18rem;
+  --bump-icon-size: 72px;
 }
 
-.bump-compare-shell--half-horizontal .week-display::before {
-  height: 0;
-}
-
-.bump-compare-shell--half-horizontal .week-number {
-  font: italic 700 1.35rem/1 "Times New Roman", serif;
-}
-
-.bump-compare-shell--half-horizontal .trimester-display {
-  font: 900 0.68rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--half-horizontal .comparator {
+.bump-compare-shell--half-horizontal .bump-compare__comparator {
   gap: 0.08rem;
 }
 
-.bump-compare-shell--half-horizontal .icon-container {
-  width: 82px;
-  height: 82px;
+.bump-compare-shell--half-horizontal .bump-compare__icon {
   overflow: hidden;
 }
 
-.bump-compare-shell--half-horizontal .icon-container img {
-  width: 92%;
-  height: 92%;
-}
-
-.bump-compare-shell--half-horizontal .comparator-name {
-  font: 900 0.9rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--half-horizontal .comparator-blurb {
-  font: italic 400 0.64rem/1.1 "Times New Roman", serif;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 92%;
-}
-
-.bump-compare-shell--half-horizontal .comparator-size {
-  font: 400 0.66rem/1 "Courier New", monospace;
-  white-space: nowrap;
-}
-
-.bump-compare-shell--half-horizontal .progress-container {
-  gap: 0.12rem;
-  align-self: end;
-  padding-bottom: 0.12rem;
-}
-
-.bump-compare-shell--half-horizontal .progress-container progress {
-  height: 9px;
-}
-
-.bump-compare-shell--half-horizontal .progress-text {
-  font: 400 0.58rem/1.1 "Courier New", monospace;
-  margin-top: 0.06rem;
+.bump-compare-shell--half-horizontal .bump-compare__blurb {
+  display: none;
 }
 
 /* Half vertical specific tweaks */
-.bump-compare-shell--half-vertical .title_bar .title {
-  font: 900 0.85rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--half-vertical .week-number {
-  font: italic 700 1.85rem/1 "Times New Roman", serif;
-}
-
-.bump-compare-shell--half-vertical .trimester-display {
-  font: 900 0.875rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--half-vertical .comparator {
-  gap: 0.14rem;
-}
-
-.bump-compare-shell--half-vertical .icon-container {
-  width: 112px;
-  height: 112px;
-  margin-bottom: 0.18rem;
-  overflow: hidden;
-}
-
-.bump-compare-shell--half-vertical .icon-container img {
-  width: 94%;
-  height: 94%;
-}
-
-.bump-compare-shell--half-vertical .comparator-name {
-  font: 900 1.1rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--half-vertical .comparator-blurb {
-  font: italic 400 0.78rem/1.2 "Times New Roman", serif;
-}
-
-.bump-compare-shell--half-vertical .comparator-size {
-  font: 400 0.8rem/1 "Courier New", monospace;
-}
-
-.bump-compare-shell--half-vertical .progress-text {
-  font: 400 0.72rem/1 "Courier New", monospace;
+.bump-compare-shell--half-vertical {
+  --bump-icon-size: 112px;
 }
 
 /* Quadrant */
-.bump-compare-shell--quadrant .title_bar .title {
-  font: 900 0.65rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
 .bump-compare-shell--quadrant {
-  --v-gap: 0.12rem;
+  --bump-gap: 0.12rem;
+  --bump-icon-size: 52px;
 }
 
-.bump-compare-shell--quadrant .bump-compare {
-  grid-template-rows: auto 1fr auto;
-  align-content: stretch;
-}
-
-.bump-compare-shell--quadrant .week-number {
-  font: italic 700 1.15rem/1 "Times New Roman", serif;
-}
-
-.bump-compare-shell--quadrant .trimester-display {
-  font: 900 0.625rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--quadrant .comparator {
-  gap: 0.06rem;
-}
-
-.bump-compare-shell--quadrant .icon-container {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 0.08rem;
+.bump-compare-shell--quadrant .bump-compare__icon {
   overflow: hidden;
 }
 
-.bump-compare-shell--quadrant .icon-container img {
-  width: 92%;
-  height: 92%;
-}
-
-.bump-compare-shell--quadrant .comparator-name {
-  font: 600 0.82rem/1 "Arial Black", "Helvetica Neue", sans-serif;
-}
-
-.bump-compare-shell--quadrant .comparator-blurb {
-  font: italic 400 0.52rem/1.1 "Times New Roman", serif;
-  max-width: 97%;
-}
-
-.bump-compare-shell--quadrant .comparator-size {
-  font: 400 0.58rem/1 "Courier New", monospace;
-}
-
-.bump-compare-shell--quadrant .progress-container {
-  gap: 0.14rem;
-  padding-bottom: 0.16rem;
-}
-
-.bump-compare-shell--quadrant .progress-container progress {
-  height: 7px;
-  border-width: 1px;
-}
-
-.bump-compare-shell--quadrant .progress-text {
-  font: 400 0.5rem/1.1 "Courier New", monospace;
-  margin-top: 0.08rem;
+.bump-compare-shell--quadrant .bump-compare__blurb,
+.bump-compare-shell--quadrant .bump-progress {
+  display: none;
 }
 </style>
 
@@ -494,6 +294,14 @@
     const locale = container.dataset.locale || 'en-GB';
     const units = container.dataset.units || 'metric';
     const weeksData = JSON.parse(container.dataset.weeks || '[]');
+    const currentWeekEl = document.getElementById('current-week');
+    const titleWeekEl = document.getElementById('title-week');
+    const trimesterEl = document.getElementById('trimester-display');
+    const progressEl = document.getElementById('progress-fill');
+    const progressTextEl = document.getElementById('progress-text');
+    const comparatorNameEl = document.getElementById('comparator-name');
+    const comparatorBlurbEl = document.getElementById('comparator-blurb');
+    const comparatorSizeEl = document.getElementById('comparator-size');
     const us_name_aliases = {
       'Aubergine': 'Eggplant',
       'Courgette': 'Zucchini',
@@ -504,16 +312,19 @@
     };
 
     if (!dueDateStr) {
-      document.getElementById('current-week').textContent = '?';
-      document.getElementById('comparator-name').textContent = 'Set due date';
+      currentWeekEl.textContent = '?';
+      titleWeekEl.textContent = 'Set due date';
+      comparatorNameEl.textContent = 'Set due date';
+      comparatorSizeEl.textContent = 'Add YYYY-MM-DD in settings';
       return;
     }
 
     // Parse due date
     const dueDate = new Date(dueDateStr + 'T00:00:00');
     if (isNaN(dueDate.getTime())) {
-      document.getElementById('current-week').textContent = '?';
-      document.getElementById('comparator-name').textContent = 'Invalid date';
+      currentWeekEl.textContent = '?';
+      titleWeekEl.textContent = 'Invalid date';
+      comparatorNameEl.textContent = 'Invalid date';
       return;
     }
 
@@ -523,9 +334,10 @@
     const daysToDue = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
 
     if (daysToDue > 280) {
-      document.getElementById('current-week').textContent = '!';
-      document.getElementById('comparator-name').textContent = 'Due date too far';
-      document.getElementById('comparator-size').textContent = 'Date must be within 9 months';
+      currentWeekEl.textContent = '!';
+      titleWeekEl.textContent = 'Due date too far';
+      comparatorNameEl.textContent = 'Due date too far';
+      comparatorSizeEl.textContent = 'Date must be within 9 months';
       return;
     }
 
@@ -540,7 +352,8 @@
     }
 
     // Display week
-    document.getElementById('current-week').textContent = week;
+    currentWeekEl.textContent = week;
+    titleWeekEl.textContent = 'Week ' + week;
 
     // Determine and display trimester
     let trimester;
@@ -551,12 +364,12 @@
     } else {
       trimester = 'Third Trimester';
     }
-    document.getElementById('trimester-display').textContent = trimester;
+    trimesterEl.textContent = trimester;
 
     // Update progress bar
     const progressPercent = Math.max(0, Math.min(100, ((280 - daysToDue) / 280) * 100));
-    document.getElementById('progress-fill').value = progressPercent;
-    document.getElementById('progress-text').textContent = "You're " + Math.round(progressPercent) + "% of the way along!";
+    progressEl.value = progressPercent;
+    progressTextEl.textContent = Math.round(progressPercent) + '%';
 
     // Display comparator name
     const localized_name = comparator.name[locale] || comparator.name['en-GB'] || '';
@@ -564,13 +377,16 @@
     const name = locale === 'en-US'
       ? (us_name_aliases[localized_name] || us_name_aliases[gb_name] || localized_name)
       : localized_name;
-    document.getElementById('comparator-name').textContent = name;
+    comparatorNameEl.textContent = name;
     const blurb = comparator.blurb && (comparator.blurb[locale] || comparator.blurb['en-GB']) || '';
-    document.getElementById('comparator-blurb').textContent = blurb;
+    comparatorBlurbEl.textContent = blurb;
 
     // Convert and display size
+    const compactSize = container.classList.contains('bump-compare--compact') || container.classList.contains('bump-compare--quadrant');
     let lengthStr;
     let weightStr;
+    let compactLengthStr;
+    let compactWeightStr;
     if (units === 'imperial') {
       const lengthIn = (comparator.length_mm / 25.4).toFixed(1);
       const weightOz = comparator.weight_g / 28.35;
@@ -578,24 +394,33 @@
         const lbs = Math.floor(weightOz / 16);
         const oz = Math.round(weightOz % 16);
         weightStr = lbs + ' lb ' + oz + ' oz';
+        compactWeightStr = lbs + 'lb' + oz + 'oz';
       } else {
         weightStr = weightOz.toFixed(1) + ' oz';
+        compactWeightStr = weightOz.toFixed(1) + 'oz';
       }
       lengthStr = lengthIn + ' in';
+      compactLengthStr = lengthIn + 'in';
     } else {
       if (comparator.length_mm > 100) {
         lengthStr = (comparator.length_mm / 10).toFixed(1) + ' cm';
+        compactLengthStr = (comparator.length_mm / 10).toFixed(1) + 'cm';
       } else {
         lengthStr = comparator.length_mm + ' mm';
+        compactLengthStr = comparator.length_mm + 'mm';
       }
       if (comparator.weight_g >= 1000) {
         weightStr = (comparator.weight_g / 1000).toFixed(1) + ' kg';
+        compactWeightStr = (comparator.weight_g / 1000).toFixed(1) + 'kg';
       } else {
         weightStr = comparator.weight_g + ' g';
+        compactWeightStr = comparator.weight_g + 'g';
       }
     }
 
-    document.getElementById('comparator-size').textContent = 'about ' + lengthStr + ' long or ' + weightStr;
+    comparatorSizeEl.textContent = compactSize
+      ? compactLengthStr + '/' + compactWeightStr
+      : lengthStr + ', ' + weightStr;
 
     // Show icon if available
     const iconEl = document.getElementById('comparator-icon');

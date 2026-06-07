@@ -7,7 +7,7 @@ A single-purpose TRMNL v2 plugin that shows the current gestational week and a l
 ## Objectives
 
 * Zero-maintenance deployment (no server to run).
-* Clean presentation on TRMNL’s e-ink displays using Framework v2 components.
+* Clean presentation on TRMNL’s e-ink displays using TRMNL Framework components.
 * UK English + metric and US English + imperial selectable in settings.
 * Account for every week (0–40) with a recognisable 1-bit icon and approximate length/weight.
 
@@ -33,6 +33,44 @@ Technical specifics live in `AGENTS.md`, including:
 * `CUSTOM_FIELDS_SETUP.md`
 * `weeks.md`
 * `shared_markup.liquid`
+
+## Local Preview
+
+This repo includes a project-local TRMNLP setup. It keeps Ruby and gems under `.trmnl-dev/`, with `src/` symlinks pointing back to the root templates so Chef copy/paste files remain the source of truth.
+
+```sh
+scripts/install_trmnlp.sh
+./bin/trmnlp lint
+./bin/trmnlp build
+./bin/trmnlp serve
+```
+
+Preview runs at <http://127.0.0.1:4567>. To uninstall the local runtime and build output:
+
+```sh
+scripts/uninstall_trmnlp.sh
+```
+
+## Icon Regeneration
+
+This repo supports two regeneration paths.
+
+For Codex built-in image generation, generate a single 5-column by 8-row sprite sheet using the shared prompt from `feedback.md` and the exact row-major order in `scripts/process_builtin_sprite_sheet.sh`. Then process it into individual transparent PNGs:
+
+```sh
+scripts/process_builtin_sprite_sheet.sh /path/to/generated-sprite-sheet.png
+cp output/imagegen/bump-icons-built-in/transparent/*.png images_clean/
+```
+
+The script writes a review sheet to `output/imagegen/bump-icons-built-in/contact-sheet.png`.
+
+For API-based parallel generation, set `OPENAI_API_KEY` locally and run:
+
+```sh
+scripts/generate_icons_batch.sh
+```
+
+Generated candidates are written to `output/imagegen/bump-icons/` for review. Use `DRY_RUN=1 scripts/generate_icons_batch.sh` to inspect the batch requests without making API calls.
 
 ## Licensing
 
