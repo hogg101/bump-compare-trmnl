@@ -55,14 +55,14 @@ scripts/uninstall_trmnlp.sh
 
 This repo supports two regeneration paths.
 
-For Codex built-in image generation, generate a single 5-column by 8-row sprite sheet using the shared prompt from `feedback.md` and the exact row-major order in `scripts/process_builtin_sprite_sheet.sh`. Then process it into individual transparent PNGs:
+For Codex built-in image generation, generate each icon as an individual image on a flat `#ff00ff` chroma-key background. Process each generated file directly into a transparent grayscale PNG:
 
 ```sh
-scripts/process_builtin_sprite_sheet.sh /path/to/generated-sprite-sheet.png
-cp output/imagegen/bump-icons-built-in/transparent/*.png images_clean/
+scripts/process_builtin_icon.sh /path/to/generated-icon.png aubergine.png
+cp output/imagegen/bump-icons-individual/transparent/*.png images_clean/
 ```
 
-The script writes a review sheet to `output/imagegen/bump-icons-built-in/contact-sheet.png`.
+Generated candidates are written to `output/imagegen/bump-icons-individual/` for review. Prefer individual runs over sprite sheets so every icon gets subject-specific prompting and no grid-cropping step is required.
 
 For API-based parallel generation, set `OPENAI_API_KEY` locally and run:
 
